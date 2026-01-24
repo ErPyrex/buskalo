@@ -1,8 +1,14 @@
 "use client";
 
+import {
+  IconBrandDjango,
+  IconBrandNextjs,
+  IconRocket,
+} from "@tabler/icons-react";
+import Link from "next/link";
 import ApiTest from "@/components/ApiTest";
-import { IconBrandNextjs, IconBrandDjango, IconRocket } from "@tabler/icons-react";
 import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 
 export default function Home() {
@@ -16,7 +22,10 @@ export default function Home() {
       <div className="z-10 text-center space-y-12 max-w-4xl">
         <div className="space-y-6">
           <div className="flex justify-center gap-2 mb-4">
-            <Badge variant="outline" className="px-4 py-1 border-white/10 text-white/60 bg-white/5 backdrop-blur-sm">
+            <Badge
+              variant="outline"
+              className="px-4 py-1 border-white/10 text-white/60 bg-white/5 backdrop-blur-sm"
+            >
               v1.0.0
             </Badge>
             <Badge variant="secondary" className="px-4 py-1 gap-1">
@@ -24,7 +33,7 @@ export default function Home() {
               Ready for Production
             </Badge>
           </div>
-          
+
           <h1 className="text-5xl md:text-8xl font-black tracking-tighter text-white mb-6 leading-[0.9]">
             <span className="bg-clip-text text-transparent bg-gradient-to-r from-blue-400 via-indigo-400 to-purple-400">
               MODERN
@@ -32,10 +41,10 @@ export default function Home() {
             <br />
             ARCHITECTURE
           </h1>
-          
+
           <p className="text-zinc-400 text-lg md:text-xl max-w-2xl mx-auto leading-relaxed font-medium">
-            Next.js 16 + Shadcn Lyra + Django Rest Framework. 
-            The ultimate starting point for high-performance applications.
+            Next.js 16 + Shadcn Lyra + Django Rest Framework. The ultimate
+            starting point for high-performance applications.
           </p>
         </div>
 
@@ -47,7 +56,9 @@ export default function Home() {
               </div>
               <div className="text-center">
                 <h3 className="text-white font-bold">Frontend</h3>
-                <p className="text-zinc-500 text-sm">Next.js, Radix UI, Biome</p>
+                <p className="text-zinc-500 text-sm">
+                  Next.js, Radix UI, Biome
+                </p>
               </div>
             </CardContent>
           </Card>
@@ -65,17 +76,37 @@ export default function Home() {
           </Card>
         </div>
 
-        <ApiTest />
+        <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
+          <ApiTest />
+          <Link href="/products">
+            <Button
+              variant="outline"
+              className="mt-8 rounded-xl font-medium shadow-lg hover:shadow-indigo-500/10 transition-all active:scale-95 px-8 py-6 h-auto text-lg border-white/10 bg-white/5 backdrop-blur-sm text-white hover:bg-white hover:text-black"
+            >
+              View Product Catalog
+            </Button>
+          </Link>
+        </div>
 
         <div className="mt-20 pt-12 border-t border-white/5 flex flex-col items-center gap-6">
-          <span className="text-[10px] font-black tracking-[0.3em] uppercase text-white/30">Technology Stack</span>
+          <span className="text-[10px] font-black tracking-[0.3em] uppercase text-white/30">
+            Technology Stack
+          </span>
           <div className="flex flex-wrap gap-8 items-center justify-center opacity-40 hover:opacity-100 transition-opacity duration-500">
-             <img src="https://raw.githubusercontent.com/biomejs/biome/main/website/src/assets/logo-light.svg" alt="Biome" className="h-6" />
-             <img src="https://www.djangoproject.com/m/img/logos/django-logo-negative.svg" alt="Django" className="h-4" />
-             <div className="flex items-center gap-2 text-white font-bold text-xl tracking-tighter">
-                <div className="w-5 h-5 bg-white rounded-sm" />
-                shadcn/ui
-             </div>
+            <img
+              src="https://raw.githubusercontent.com/biomejs/biome/main/website/src/assets/logo-light.svg"
+              alt="Biome"
+              className="h-6"
+            />
+            <img
+              src="https://www.djangoproject.com/m/img/logos/django-logo-negative.svg"
+              alt="Django"
+              className="h-4"
+            />
+            <div className="flex items-center gap-2 text-white font-bold text-xl tracking-tighter">
+              <div className="w-5 h-5 bg-white rounded-sm" />
+              shadcn/ui
+            </div>
           </div>
         </div>
       </div>
