@@ -1,0 +1,27 @@
+# Node
+node_modules/
+.next/
+out/
+build/
+.env*
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+.pnpm-debug.log*
+
+# Python
+venv/
+.venv/
+env/
+__pycache__/
+*.py[cod]
+*$py.class
+.pytest_cache/
+.DS_Store
+db.sqlite3
+media/
+static_root/
+
+# Biome
+.biome_cache/
