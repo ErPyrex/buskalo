@@ -36,6 +36,17 @@ pnpm dev
 ```
 The frontend will be available at `http://localhost:3000/`.
 
+### Authentication Endpoints
+
+- `POST /api/auth/register/`: Create a new user.
+- `POST /api/auth/login/`: Get JWT tokens (access & refresh).
+- `POST /api/auth/token/refresh/`: Refresh an access token.
+- `GET /api/auth/profile/`: Get/Update current user profile (requires Auth).
+
+### Custom User Model
+
+The project uses a custom `User` model in the `users` app, which includes `bio` and `avatar` fields.
+
 ## Biome Commands
 
 Biome is used for both linting and formatting.
