@@ -8,6 +8,8 @@ export interface Product {
   shop: number;
   category: number | null;
   category_name: string | null;
+  shop_name?: string;
+  shop_location?: string;
   name: string;
   description: string;
   image: string | null;

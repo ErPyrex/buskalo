@@ -204,9 +204,17 @@ export default function ProductSearch() {
                         {item.name}
                       </p>
                       {mode === "products" ? (
-                        <p className="text-zinc-500 text-xs truncate uppercase font-medium tracking-tighter">
-                          {item.category_name || "General"}
-                        </p>
+                        <div className="flex flex-col">
+                          <p className="text-zinc-500 text-xs truncate uppercase font-medium tracking-tighter">
+                            {item.category_name || "General"}
+                          </p>
+                          {item.shop_location && (
+                            <div className="flex items-center gap-1 text-zinc-600 text-[9px] uppercase font-bold tracking-tighter mt-0.5">
+                              <IconMapPin size={10} className="text-indigo-500/30" />
+                              <span className="truncate">{item.shop_location}</span>
+                            </div>
+                          )}
+                        </div>
                       ) : (
                         <div className="flex items-center gap-1 text-zinc-500 text-[10px] uppercase font-bold tracking-tighter">
                           <IconMapPin size={10} />

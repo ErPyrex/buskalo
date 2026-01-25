@@ -1,4 +1,4 @@
-import { IconArchive, IconArrowLeft, IconPackage } from "@tabler/icons-react";
+import { IconArchive, IconArrowLeft, IconBuildingStore, IconMapPin, IconPackage } from "@tabler/icons-react";
 import Link from "next/link";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -75,6 +75,14 @@ export default async function ProductsPage() {
 
                 <CardHeader className="space-y-1">
                   <div className="flex items-center gap-2 mb-1">
+                    {product.shop_name && (
+                      <Badge
+                        variant="secondary"
+                        className="text-[10px] uppercase tracking-widest px-2 py-0 bg-indigo-500/10 text-indigo-400 border-indigo-500/10"
+                      >
+                        {product.shop_name}
+                      </Badge>
+                    )}
                     {product.category_name && (
                       <Badge
                         variant="secondary"
@@ -95,11 +103,21 @@ export default async function ProductsPage() {
                   </p>
 
                   <div className="flex items-center justify-between pt-4 border-t border-white/5">
-                    <div className="flex items-center gap-2 text-zinc-400">
-                      <IconArchive size={16} />
-                      <span className="text-xs font-medium">
-                        {product.stock} in stock
-                      </span>
+                    <div className="space-y-1">
+                      <div className="flex items-center gap-2 text-zinc-400">
+                        <IconArchive size={14} />
+                        <span className="text-[10px] font-medium">
+                          {product.stock} in stock
+                        </span>
+                      </div>
+                      {product.shop_location && (
+                        <div className="flex items-center gap-2 text-zinc-500">
+                          <IconMapPin size={14} className="text-indigo-500/50" />
+                          <span className="text-[10px] truncate max-w-[120px]">
+                            {product.shop_location}
+                          </span>
+                        </div>
+                      )}
                     </div>
                     <Button
                       variant="outline"

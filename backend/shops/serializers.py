@@ -10,12 +10,16 @@ class CategorySerializer(serializers.ModelSerializer):
 
 class ProductSerializer(serializers.ModelSerializer):
     category_name = serializers.ReadOnlyField(source="category.name")
+    shop_name = serializers.ReadOnlyField(source="shop.name")
+    shop_location = serializers.ReadOnlyField(source="shop.location")
 
     class Meta:
         model = Product
         fields = (
             "id",
             "shop",
+            "shop_name",
+            "shop_location",
             "category",
             "category_name",
             "name",

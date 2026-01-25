@@ -95,7 +95,7 @@ export default async function ShopsPage() {
                   <div className="space-y-2 py-4 border-y border-white/5">
                     <div className="flex items-center gap-3 text-zinc-500">
                       <IconMapPin size={18} className="text-indigo-500" />
-                      <span className="text-sm truncate">{shop.address || "Dirección no disponible"}</span>
+                      <span className="text-sm truncate">{shop.location || "Dirección no disponible"}</span>
                     </div>
                     {shop.phone && (
                       <div className="flex items-center gap-3 text-zinc-500">
