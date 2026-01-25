@@ -23,6 +23,7 @@ import {
 import { Textarea } from "@/components/ui/textarea";
 import { useAuth } from "@/context/AuthContext";
 import { createProduct, getCategories } from "@/lib/api/products";
+import { compressImage } from "@/lib/utils/image";
 
 interface CreateProductModalProps {
   shopId: string;
@@ -38,6 +39,7 @@ export default function CreateProductModal({
   onOpenChange,
 }: CreateProductModalProps) {
   const [loading, setLoading] = useState(false);
+  const [compressing, setCompressing] = useState(false);
   const [categories, setCategories] = useState<any[]>([]);
   const { token } = useAuth();
   const [formData, setFormData] = useState({
@@ -74,6 +76,13 @@ export default function CreateProductModal({
     if (!token) return;
     setLoading(true);
 
+    let imageToUpload = image;
+    if (image) {
+      setCompressing(true);
+      imageToUpload = await compressImage(image);
+      setCompressing(false);
+    }
+
     try {
       const data = new FormData();
       data.append("name", formData.name);
@@ -82,7 +91,7 @@ export default function CreateProductModal({
       data.append("stock", formData.stock);
       data.append("shop", formData.shop);
       if (formData.category) data.append("category", formData.category);
-      if (image) data.append("image", image);
+      if (imageToUpload) data.append("image", imageToUpload);
 
       await createProduct(data, token);
 
@@ -266,10 +275,13 @@ export default function CreateProductModal({
             <Button
               type="submit"
               className="bg-indigo-600 hover:bg-indigo-500 text-white font-bold h-11 px-8 rounded-xl flex items-center gap-2 shadow-lg shadow-indigo-500/20 active:scale-95 transition-all"
-              disabled={loading}
+              disabled={loading || compressing}
             >
-              {loading ? (
-                <IconLoader2 className="animate-spin" size={20} />
+              {loading || compressing ? (
+                <>
+                  <IconLoader2 className="animate-spin" size={20} />
+                  {compressing ? "Optimizing..." : "Adding..."}
+                </>
               ) : (
                 <>
                   <IconPlus size={20} />

@@ -38,6 +38,7 @@ import {
   getCategories,
   updateProduct,
 } from "@/lib/api/products";
+import { compressImage } from "@/lib/utils/image";
 import type { Product } from "@/types";
 
 interface EditProductModalProps {
@@ -54,6 +55,7 @@ export default function EditProductModal({
   onOpenChange,
 }: EditProductModalProps) {
   const [loading, setLoading] = useState(false);
+  const [compressing, setCompressing] = useState(false);
   const [deleting, setDeleting] = useState(false);
   const [categories, setCategories] = useState<any[]>([]);
   const { token } = useAuth();
@@ -104,6 +106,13 @@ export default function EditProductModal({
     if (!token || !product) return;
     setLoading(true);
 
+    let imageToUpload = image;
+    if (image) {
+      setCompressing(true);
+      imageToUpload = await compressImage(image);
+      setCompressing(false);
+    }
+
     try {
       const data = new FormData();
       data.append("name", formData.name);
@@ -111,7 +120,7 @@ export default function EditProductModal({
       data.append("price", formData.price);
       data.append("stock", formData.stock);
       if (formData.category) data.append("category", formData.category);
-      if (image) data.append("image", image);
+      if (imageToUpload) data.append("image", imageToUpload);
 
       await updateProduct(product.id, data, token);
 
@@ -346,10 +355,13 @@ export default function EditProductModal({
               <Button
                 type="submit"
                 className="bg-white text-black hover:bg-zinc-200 font-bold h-11 px-8 rounded-xl flex items-center gap-2 shadow-lg shadow-white/5 active:scale-95 transition-all"
-                disabled={loading}
+                disabled={loading || compressing}
               >
-                {loading ? (
-                  <IconLoader2 className="animate-spin" size={20} />
+                {loading || compressing ? (
+                  <>
+                    <IconLoader2 className="animate-spin" size={20} />
+                    {compressing ? "Optimizing..." : "Saving..."}
+                  </>
                 ) : (
                   <>
                     <IconDeviceFloppy size={20} />

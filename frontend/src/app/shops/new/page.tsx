@@ -21,9 +21,11 @@ import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { useAuth } from "@/context/AuthContext";
 import { createShop } from "@/lib/api/shops";
+import { compressImage } from "@/lib/utils/image";
 
 export default function NewShopPage() {
   const [loading, setLoading] = useState<"active" | "draft" | null>(null);
+  const [compressing, setCompressing] = useState(false);
   const [success, setSuccess] = useState<{ type: "active" | "draft" } | null>(
     null,
   );
@@ -56,13 +58,20 @@ export default function NewShopPage() {
     setLoading(status);
     setError("");
 
+    let imageToUpload = image;
+    if (image) {
+      setCompressing(true);
+      imageToUpload = await compressImage(image);
+      setCompressing(false);
+    }
+
     try {
       const data = new FormData();
       data.append("name", formData.name);
       data.append("description", formData.description);
       data.append("location", formData.location);
       data.append("status", status);
-      if (image) data.append("image", image);
+      if (imageToUpload) data.append("image", imageToUpload);
 
       await createShop(data, token);
       setSuccess({ type: status });
@@ -239,30 +248,30 @@ export default function NewShopPage() {
                   type="button"
                   variant="ghost"
                   className="text-zinc-500 hover:text-white flex-1"
-                  disabled={!!loading}
+                  disabled={!!loading || compressing}
                   onClick={() => handleCreate("draft")}
                 >
-                  {loading === "draft" ? (
+                  {loading === "draft" || (compressing && loading === "draft") ? (
                     <IconLoader2 className="animate-spin" size={20} />
                   ) : (
                     <span className="flex items-center gap-2">
                       <IconDeviceFloppy size={18} />
-                      Save as draft
+                      {compressing && loading === "draft" ? "Optimizing..." : "Save as draft"}
                     </span>
                   )}
                 </Button>
                 <Button
                   type="button"
                   className="bg-indigo-600 text-white hover:bg-indigo-500 font-bold rounded-xl px-8 h-12 flex-1 shadow-lg shadow-indigo-500/20 active:scale-95 transition-all flex items-center gap-2"
-                  disabled={!!loading}
+                  disabled={!!loading || compressing}
                   onClick={() => handleCreate("active")}
                 >
-                  {loading === "active" ? (
+                  {loading === "active" || (compressing && loading === "active") ? (
                     <IconLoader2 className="animate-spin" size={20} />
                   ) : (
                     <span className="flex items-center gap-2">
                       <IconRocket size={18} />
-                      Launch Store
+                      {compressing && loading === "active" ? "Optimizing..." : "Launch Store"}
                     </span>
                   )}
                 </Button>
