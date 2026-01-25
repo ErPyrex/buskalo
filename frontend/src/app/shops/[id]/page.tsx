@@ -12,11 +12,11 @@ import {
 } from "@tabler/icons-react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { PremiumImage } from "@/components/PremiumImage";
 import { use, useCallback, useEffect, useState } from "react";
 import CreateProductModal from "@/components/CreateProductModal";
 import EditProductModal from "@/components/EditProductModal";
 import EditShopModal from "@/components/EditShopModal";
+import { PremiumImage } from "@/components/PremiumImage";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -218,9 +218,9 @@ export default function ShopDashboardPage({
               >
                 <div className="h-48 flex items-center justify-center relative">
                   {product.image ? (
-                    <PremiumImage 
-                      src={product.image} 
-                      alt={product.name} 
+                    <PremiumImage
+                      src={product.image}
+                      alt={product.name}
                       className="group-hover:scale-110"
                     />
                   ) : (

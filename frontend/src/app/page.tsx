@@ -1,20 +1,7 @@
 "use client";
 
-import {
-  IconBrandDjango,
-  IconBrandNextjs,
-  IconHistory,
-  IconLogin,
-  IconLogout,
-  IconPlus,
-  IconRocket,
-} from "@tabler/icons-react";
-import Link from "next/link";
 import MyShops from "@/components/MyShops";
 import ProductSearch from "@/components/ProductSearch";
-import { Badge } from "@/components/ui/badge";
-import { Button } from "@/components/ui/button";
-import { Card, CardContent } from "@/components/ui/card";
 import { useAuth } from "@/context/AuthContext";
 
 export default function Home() {
@@ -39,7 +26,6 @@ export default function Home() {
             <ProductSearch />
           </div>
         </div>
-
 
         {user && (
           <div className="mt-12">

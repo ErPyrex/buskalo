@@ -1,17 +1,17 @@
 "use client";
 
-import Link from "next/link";
-import { useAuth } from "@/context/AuthContext";
-import { Button } from "@/components/ui/button";
-import { 
-  IconBuildingStore, 
-  IconPackage, 
-  IconLogin, 
+import {
+  IconBuildingStore,
+  IconLogin,
   IconLogout,
-  IconUser,
+  IconPackage,
+  IconPlus,
   IconSearch,
-  IconPlus
+  IconUser,
 } from "@tabler/icons-react";
+import Link from "next/link";
+import { Button } from "@/components/ui/button";
+import { useAuth } from "@/context/AuthContext";
 
 export default function Navbar() {
   const { user, logout } = useAuth();
@@ -31,15 +31,15 @@ export default function Navbar() {
 
         {/* Navigation - Centered */}
         <div className="hidden md:flex items-center gap-6 absolute left-1/2 -translate-x-1/2">
-          <Link 
-            href="/products" 
+          <Link
+            href="/products"
             className="text-zinc-400 hover:text-white flex items-center gap-2 transition-colors font-medium"
           >
             <IconPackage size={18} />
             Productos
           </Link>
-          <Link 
-            href="/shops" 
+          <Link
+            href="/shops"
             className="text-zinc-400 hover:text-white flex items-center gap-2 transition-colors font-medium"
           >
             <IconBuildingStore size={18} />
@@ -52,20 +52,29 @@ export default function Navbar() {
           {user ? (
             <div className="flex items-center gap-3">
               <Link href="/shops/new">
-                <Button size="sm" className="hidden sm:flex bg-indigo-600 hover:bg-indigo-500 text-white gap-2 h-9 px-4">
+                <Button
+                  size="sm"
+                  className="hidden sm:flex bg-indigo-600 hover:bg-indigo-500 text-white gap-2 h-9 px-4"
+                >
                   <IconPlus size={16} />
                   <span>Crear Tienda</span>
                 </Button>
-                <Button size="icon" className="flex sm:hidden bg-indigo-600 hover:bg-indigo-500 text-white h-9 w-9" title="Crear Tienda">
+                <Button
+                  size="icon"
+                  className="flex sm:hidden bg-indigo-600 hover:bg-indigo-500 text-white h-9 w-9"
+                  title="Crear Tienda"
+                >
                   <IconPlus size={18} />
                 </Button>
               </Link>
               <div className="hidden sm:flex items-center gap-2 px-3 py-1.5 bg-white/5 rounded-full border border-white/10">
                 <IconUser size={16} className="text-indigo-400" />
-                <span className="text-sm text-zinc-300 font-medium">{user.username}</span>
+                <span className="text-sm text-zinc-300 font-medium">
+                  {user.username}
+                </span>
               </div>
-              <Button 
-                variant="ghost" 
+              <Button
+                variant="ghost"
                 size="icon"
                 onClick={logout}
                 className="text-zinc-400 hover:text-white hover:bg-white/10 h-9 w-9"

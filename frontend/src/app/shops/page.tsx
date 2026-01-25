@@ -1,10 +1,15 @@
-import { IconBuildingStore, IconMapPin, IconPhone, IconStar } from "@tabler/icons-react";
+import {
+  IconBuildingStore,
+  IconMapPin,
+  IconPhone,
+  IconStar,
+} from "@tabler/icons-react";
 import Link from "next/link";
+import { PremiumImage } from "@/components/PremiumImage";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { getShops } from "@/lib/api/shops";
-import { PremiumImage } from "@/components/PremiumImage";
 
 export const dynamic = "force-dynamic";
 
@@ -20,10 +25,14 @@ export default async function ShopsPage() {
               NUESTRAS <span className="text-indigo-500">TIENDAS</span>
             </h1>
             <p className="text-zinc-500 max-w-xl text-lg">
-              Explora los negocios locales que confían en Buskalo! para conectar con sus clientes.
+              Explora los negocios locales que confían en Buskalo! para conectar
+              con sus clientes.
             </p>
           </div>
-          <Badge variant="outline" className="text-zinc-500 border-white/10 w-fit">
+          <Badge
+            variant="outline"
+            className="text-zinc-500 border-white/10 w-fit"
+          >
             {shops.length} {shops.length === 1 ? "Tienda" : "Tiendas"}
           </Badge>
         </div>
@@ -56,14 +65,17 @@ export default async function ShopsPage() {
               >
                 <CardHeader className="relative h-48 p-0 flex items-center justify-center border-b border-white/5 overflow-hidden">
                   {shop.image ? (
-                    <PremiumImage 
-                      src={shop.image} 
-                      alt={shop.name} 
+                    <PremiumImage
+                      src={shop.image}
+                      alt={shop.name}
                       className="group-hover:scale-110"
                     />
                   ) : (
                     <div className="w-full h-full bg-gradient-to-br from-indigo-900/20 to-purple-900/20 flex items-center justify-center">
-                      <IconBuildingStore size={48} className="text-indigo-400/50 group-hover:scale-110 transition-transform duration-500" />
+                      <IconBuildingStore
+                        size={48}
+                        className="text-indigo-400/50 group-hover:scale-110 transition-transform duration-500"
+                      />
                     </div>
                   )}
                   <div className="absolute top-4 right-4 flex gap-2">
@@ -72,7 +84,7 @@ export default async function ShopsPage() {
                     </Badge>
                   </div>
                 </CardHeader>
-                
+
                 <CardContent className="pt-6 space-y-6">
                   <div className="space-y-1">
                     <CardTitle className="text-2xl font-bold text-white group-hover:text-indigo-400 transition-colors">
@@ -89,13 +101,16 @@ export default async function ShopsPage() {
                   </div>
 
                   <p className="text-zinc-400 text-sm line-clamp-2">
-                    {shop.description || "Esta tienda no ha proporcionado una descripción todavía."}
+                    {shop.description ||
+                      "Esta tienda no ha proporcionado una descripción todavía."}
                   </p>
 
                   <div className="space-y-2 py-4 border-y border-white/5">
                     <div className="flex items-center gap-3 text-zinc-500">
                       <IconMapPin size={18} className="text-indigo-500" />
-                      <span className="text-sm truncate">{shop.location || "Dirección no disponible"}</span>
+                      <span className="text-sm truncate">
+                        {shop.location || "Dirección no disponible"}
+                      </span>
                     </div>
                     {shop.phone && (
                       <div className="flex items-center gap-3 text-zinc-500">

@@ -1,6 +1,12 @@
 "use client";
 
-import { IconDeviceFloppy, IconLoader2, IconTrash, IconPhoto, IconX } from "@tabler/icons-react";
+import {
+  IconDeviceFloppy,
+  IconLoader2,
+  IconPhoto,
+  IconTrash,
+  IconX,
+} from "@tabler/icons-react";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import {
@@ -201,10 +207,17 @@ export default function EditShopModal({
               <div className="flex items-center gap-4">
                 {imagePreview ? (
                   <div className="relative w-20 h-20 rounded-xl overflow-hidden border border-white/10">
-                    <img src={imagePreview} alt="Preview" className="w-full h-full object-cover" />
+                    <img
+                      src={imagePreview}
+                      alt="Preview"
+                      className="w-full h-full object-cover"
+                    />
                     <button
                       type="button"
-                      onClick={() => { setImage(null); setImagePreview(null); }}
+                      onClick={() => {
+                        setImage(null);
+                        setImagePreview(null);
+                      }}
                       className="absolute top-1 right-1 p-1 bg-black/60 rounded-full text-white hover:bg-red-500 transition-colors"
                     >
                       <IconX size={12} />
@@ -213,7 +226,12 @@ export default function EditShopModal({
                 ) : (
                   <label className="flex flex-col items-center justify-center w-20 h-20 rounded-xl border border-dashed border-white/10 bg-white/5 hover:bg-white/10 cursor-pointer transition-colors">
                     <IconPhoto size={24} className="text-zinc-500" />
-                    <input type="file" className="hidden" accept="image/*" onChange={handleImageChange} />
+                    <input
+                      type="file"
+                      className="hidden"
+                      accept="image/*"
+                      onChange={handleImageChange}
+                    />
                   </label>
                 )}
                 <div className="text-xs text-zinc-500">

@@ -1,10 +1,9 @@
-import { IconArchive, IconArrowLeft, IconBuildingStore, IconMapPin, IconPackage } from "@tabler/icons-react";
-import Link from "next/link";
+import { IconArchive, IconMapPin, IconPackage } from "@tabler/icons-react";
+import { PremiumImage } from "@/components/PremiumImage";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { getProducts } from "@/lib/api/products";
-import { PremiumImage } from "@/components/PremiumImage";
 import type { Product } from "@/types";
 
 export const dynamic = "force-dynamic";
@@ -21,11 +20,14 @@ export default async function ProductsPage() {
               CATÁLOGO <span className="text-indigo-500">GLOBAL</span>
             </h1>
             <p className="text-zinc-500 max-w-xl text-lg">
-              Descubre los mejores productos de todas nuestras tiendas. Calidad y variedad
-              en un solo lugar.
+              Descubre los mejores productos de todas nuestras tiendas. Calidad
+              y variedad en un solo lugar.
             </p>
           </div>
-          <Badge variant="outline" className="text-zinc-500 border-white/10 w-fit">
+          <Badge
+            variant="outline"
+            className="text-zinc-500 border-white/10 w-fit"
+          >
             {products.length} {products.length === 1 ? "Producto" : "Productos"}
           </Badge>
         </div>
@@ -53,9 +55,9 @@ export default async function ProductsPage() {
               >
                 <div className="h-48 flex items-center justify-center relative">
                   {product.image ? (
-                    <PremiumImage 
-                      src={product.image} 
-                      alt={product.name} 
+                    <PremiumImage
+                      src={product.image}
+                      alt={product.name}
                       className="group-hover:scale-110"
                     />
                   ) : (
@@ -112,7 +114,10 @@ export default async function ProductsPage() {
                       </div>
                       {product.shop_location && (
                         <div className="flex items-center gap-2 text-zinc-500">
-                          <IconMapPin size={14} className="text-indigo-500/50" />
+                          <IconMapPin
+                            size={14}
+                            className="text-indigo-500/50"
+                          />
                           <span className="text-[10px] truncate max-w-[120px]">
                             {product.shop_location}
                           </span>

@@ -6,8 +6,8 @@ import {
   IconCircleCheck,
   IconDeviceFloppy,
   IconLoader2,
-  IconRocket,
   IconPhoto,
+  IconRocket,
   IconX,
 } from "@tabler/icons-react";
 import Link from "next/link";
@@ -220,10 +220,17 @@ export default function NewShopPage() {
                 <div className="flex items-center gap-4">
                   {imagePreview ? (
                     <div className="relative w-24 h-24 rounded-xl overflow-hidden border border-white/10 group">
-                      <img src={imagePreview} alt="Preview" className="w-full h-full object-cover" />
+                      <img
+                        src={imagePreview}
+                        alt="Preview"
+                        className="w-full h-full object-cover"
+                      />
                       <button
                         type="button"
-                        onClick={() => { setImage(null); setImagePreview(null); }}
+                        onClick={() => {
+                          setImage(null);
+                          setImagePreview(null);
+                        }}
                         className="absolute top-1 right-1 p-1 bg-black/60 rounded-full text-white hover:bg-red-500 transition-colors opacity-0 group-hover:opacity-100"
                       >
                         <IconX size={14} />
@@ -232,13 +239,25 @@ export default function NewShopPage() {
                   ) : (
                     <label className="flex flex-col items-center justify-center w-24 h-24 rounded-xl border border-dashed border-white/10 bg-white/5 hover:bg-white/10 cursor-pointer transition-colors">
                       <IconPhoto size={32} className="text-zinc-500" />
-                      <span className="text-[10px] text-zinc-500 mt-2">ADD IMAGE</span>
-                      <input type="file" className="hidden" accept="image/*" onChange={handleImageChange} />
+                      <span className="text-[10px] text-zinc-500 mt-2">
+                        ADD IMAGE
+                      </span>
+                      <input
+                        type="file"
+                        className="hidden"
+                        accept="image/*"
+                        onChange={handleImageChange}
+                      />
                     </label>
                   )}
                   <div className="flex-1 text-xs text-zinc-500 space-y-1">
-                    <p className="font-bold text-zinc-400">Branding is everything</p>
-                    <p>Upload a photo that represents your business. JPG, PNG or WebP supported.</p>
+                    <p className="font-bold text-zinc-400">
+                      Branding is everything
+                    </p>
+                    <p>
+                      Upload a photo that represents your business. JPG, PNG or
+                      WebP supported.
+                    </p>
                   </div>
                 </div>
               </div>

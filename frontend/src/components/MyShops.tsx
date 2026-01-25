@@ -96,7 +96,10 @@ export default function MyShops() {
                       {shop.image ? (
                         <PremiumImage src={shop.image} alt={shop.name} />
                       ) : (
-                        <IconBuildingStore size={20} className="text-zinc-600" />
+                        <IconBuildingStore
+                          size={20}
+                          className="text-zinc-600"
+                        />
                       )}
                     </div>
                     <div className="space-y-1 min-w-0">

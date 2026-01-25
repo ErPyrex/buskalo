@@ -189,10 +189,7 @@ export default function ProductSearch() {
                   >
                     <div className="w-12 h-12 bg-zinc-900 rounded-lg flex items-center justify-center text-zinc-600 group-hover:bg-indigo-500/10 group-hover:text-indigo-400 transition-colors overflow-hidden relative">
                       {item.image ? (
-                        <PremiumImage 
-                          src={item.image} 
-                          alt={item.name} 
-                        />
+                        <PremiumImage src={item.image} alt={item.name} />
                       ) : mode === "products" ? (
                         <IconPackage size={24} />
                       ) : (
@@ -210,8 +207,13 @@ export default function ProductSearch() {
                           </p>
                           {item.shop_location && (
                             <div className="flex items-center gap-1 text-zinc-600 text-[9px] uppercase font-bold tracking-tighter mt-0.5">
-                              <IconMapPin size={10} className="text-indigo-500/30" />
-                              <span className="truncate">{item.shop_location}</span>
+                              <IconMapPin
+                                size={10}
+                                className="text-indigo-500/30"
+                              />
+                              <span className="truncate">
+                                {item.shop_location}
+                              </span>
                             </div>
                           )}
                         </div>

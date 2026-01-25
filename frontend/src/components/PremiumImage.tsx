@@ -30,7 +30,7 @@ export function PremiumImage({
       className={cn(
         "relative overflow-hidden bg-zinc-800/50",
         containerClassName,
-        fill ? "h-full w-full" : ""
+        fill ? "h-full w-full" : "",
       )}
     >
       <Image
@@ -45,7 +45,7 @@ export function PremiumImage({
           className,
           isLoading
             ? "scale-105 blur-xl grayscale"
-            : "scale-100 blur-0 grayscale-0"
+            : "scale-100 blur-0 grayscale-0",
         )}
         onLoad={(img) => {
           if (img.currentTarget.complete) {
