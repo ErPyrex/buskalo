@@ -38,6 +38,13 @@ class ShopViewSet(viewsets.ModelViewSet):
         else:
             # General listing: only active shops
             queryset = queryset.filter(status="active")
+        
+        search = self.request.query_params.get("search")
+        if search:
+            queryset = queryset.filter(
+                models.Q(name__icontains=search) | 
+                models.Q(description__icontains=search)
+            )
 
         return queryset
 
