@@ -32,7 +32,9 @@ export default function MyShops() {
     if (!token) return;
     setPublishing(shopId);
     try {
-      await updateShop(shopId, { status: "active" }, token);
+      const data = new FormData();
+      data.append("status", "active");
+      await updateShop(shopId, data, token);
       setShops(
         shops.map((s) => (s.id === shopId ? { ...s, status: "active" } : s)),
       );
@@ -88,13 +90,22 @@ export default function MyShops() {
             >
               <CardContent className="p-5 flex flex-col justify-between h-full gap-4">
                 <div className="flex items-start justify-between gap-4">
-                  <div className="space-y-1">
-                    <h3 className="text-white font-bold truncate">
-                      {shop.name}
-                    </h3>
-                    <p className="text-zinc-500 text-xs line-clamp-1">
-                      {shop.location || "No address"}
-                    </p>
+                  <div className="flex items-center gap-3 min-w-0">
+                    <div className="w-10 h-10 rounded-lg bg-white/5 border border-white/10 flex-shrink-0 flex items-center justify-center overflow-hidden">
+                      {shop.image ? (
+                        <img src={shop.image} alt={shop.name} className="w-full h-full object-cover" />
+                      ) : (
+                        <IconBuildingStore size={20} className="text-zinc-600" />
+                      )}
+                    </div>
+                    <div className="space-y-1 min-w-0">
+                      <h3 className="text-white font-bold truncate">
+                        {shop.name}
+                      </h3>
+                      <p className="text-zinc-500 text-xs line-clamp-1">
+                        {shop.location || "No address"}
+                      </p>
+                    </div>
                   </div>
                   <Badge
                     variant={shop.status === "active" ? "default" : "secondary"}

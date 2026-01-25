@@ -1,6 +1,6 @@
 "use client";
 
-import { IconLoader2, IconPlus } from "@tabler/icons-react";
+import { IconLoader2, IconPlus, IconPhoto, IconX } from "@tabler/icons-react";
 import { useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
 import {
@@ -48,6 +48,20 @@ export default function CreateProductModal({
     category: "",
     shop: shopId,
   });
+  const [image, setImage] = useState<File | null>(null);
+  const [imagePreview, setImagePreview] = useState<string | null>(null);
+
+  const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (file) {
+      setImage(file);
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        setImagePreview(reader.result as string);
+      };
+      reader.readAsDataURL(file);
+    }
+  };
 
   useEffect(() => {
     if (open) {
@@ -61,15 +75,16 @@ export default function CreateProductModal({
     setLoading(true);
 
     try {
-      await createProduct(
-        {
-          ...formData,
-          price: parseFloat(formData.price),
-          stock: parseInt(formData.stock, 10),
-          category: formData.category ? parseInt(formData.category, 10) : null,
-        },
-        token,
-      );
+      const data = new FormData();
+      data.append("name", formData.name);
+      data.append("description", formData.description);
+      data.append("price", formData.price);
+      data.append("stock", formData.stock);
+      data.append("shop", formData.shop);
+      if (formData.category) data.append("category", formData.category);
+      if (image) data.append("image", image);
+
+      await createProduct(data, token);
 
       onProductCreated();
       onOpenChange(false);
@@ -81,6 +96,8 @@ export default function CreateProductModal({
         category: "",
         shop: shopId,
       });
+      setImage(null);
+      setImagePreview(null);
     } catch (error) {
       console.error("Failed to create product", error);
     } finally {
@@ -205,6 +222,35 @@ export default function CreateProductModal({
                   ))}
                 </SelectContent>
               </Select>
+            </div>
+
+            <div className="grid gap-2">
+              <Label className="text-zinc-400 text-xs font-bold uppercase tracking-wider">
+                Product Image
+              </Label>
+              <div className="flex items-center gap-4">
+                {imagePreview ? (
+                  <div className="relative w-20 h-20 rounded-xl overflow-hidden border border-white/10">
+                    <img src={imagePreview} alt="Preview" className="w-full h-full object-cover" />
+                    <button
+                      type="button"
+                      onClick={() => { setImage(null); setImagePreview(null); }}
+                      className="absolute top-1 right-1 p-1 bg-black/60 rounded-full text-white hover:bg-red-500 transition-colors"
+                    >
+                      <IconX size={12} />
+                    </button>
+                  </div>
+                ) : (
+                  <label className="flex flex-col items-center justify-center w-20 h-20 rounded-xl border border-dashed border-white/10 bg-white/5 hover:bg-white/10 cursor-pointer transition-colors">
+                    <IconPhoto size={24} className="text-zinc-500" />
+                    <input type="file" className="hidden" accept="image/*" onChange={handleImageChange} />
+                  </label>
+                )}
+                <div className="text-xs text-zinc-500">
+                  <p className="font-bold text-zinc-400">Upload high-quality JPG/PNG</p>
+                  <p>Max size: 5MB</p>
+                </div>
+              </div>
             </div>
           </div>
 

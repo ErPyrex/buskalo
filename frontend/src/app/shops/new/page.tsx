@@ -7,6 +7,8 @@ import {
   IconDeviceFloppy,
   IconLoader2,
   IconRocket,
+  IconPhoto,
+  IconX,
 } from "@tabler/icons-react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
@@ -34,6 +36,20 @@ export default function NewShopPage() {
     description: "",
     location: "", // Backend uses 'location', frontend UI said 'address'
   });
+  const [image, setImage] = useState<File | null>(null);
+  const [imagePreview, setImagePreview] = useState<string | null>(null);
+
+  const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (file) {
+      setImage(file);
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        setImagePreview(reader.result as string);
+      };
+      reader.readAsDataURL(file);
+    }
+  };
 
   const handleCreate = async (status: "active" | "draft") => {
     if (!token) return;
@@ -41,7 +57,14 @@ export default function NewShopPage() {
     setError("");
 
     try {
-      await createShop({ ...formData, status }, token);
+      const data = new FormData();
+      data.append("name", formData.name);
+      data.append("description", formData.description);
+      data.append("location", formData.location);
+      data.append("status", status);
+      if (image) data.append("image", image);
+
+      await createShop(data, token);
       setSuccess({ type: status });
       setTimeout(() => router.push("/"), 2000);
     } catch (err: any) {
@@ -179,6 +202,36 @@ export default function NewShopPage() {
                     setFormData({ ...formData, location: e.target.value })
                   }
                 />
+              </div>
+
+              <div className="space-y-2">
+                <Label className="text-zinc-400 text-xs font-bold uppercase tracking-wider">
+                  Store Banner / Logo
+                </Label>
+                <div className="flex items-center gap-4">
+                  {imagePreview ? (
+                    <div className="relative w-24 h-24 rounded-xl overflow-hidden border border-white/10 group">
+                      <img src={imagePreview} alt="Preview" className="w-full h-full object-cover" />
+                      <button
+                        type="button"
+                        onClick={() => { setImage(null); setImagePreview(null); }}
+                        className="absolute top-1 right-1 p-1 bg-black/60 rounded-full text-white hover:bg-red-500 transition-colors opacity-0 group-hover:opacity-100"
+                      >
+                        <IconX size={14} />
+                      </button>
+                    </div>
+                  ) : (
+                    <label className="flex flex-col items-center justify-center w-24 h-24 rounded-xl border border-dashed border-white/10 bg-white/5 hover:bg-white/10 cursor-pointer transition-colors">
+                      <IconPhoto size={32} className="text-zinc-500" />
+                      <span className="text-[10px] text-zinc-500 mt-2">ADD IMAGE</span>
+                      <input type="file" className="hidden" accept="image/*" onChange={handleImageChange} />
+                    </label>
+                  )}
+                  <div className="flex-1 text-xs text-zinc-500 space-y-1">
+                    <p className="font-bold text-zinc-400">Branding is everything</p>
+                    <p>Upload a photo that represents your business. JPG, PNG or WebP supported.</p>
+                  </div>
+                </div>
               </div>
 
               <div className="pt-4 border-t border-white/5 flex items-center justify-between gap-4">

@@ -10,6 +10,7 @@ export interface Product {
   category_name: string | null;
   name: string;
   description: string;
+  image: string | null;
   price: string; // Decimal is returned as string in JSON
   stock: number;
   created_at: string;
@@ -22,6 +23,7 @@ export interface Shop {
   name: string;
   location: string;
   description: string;
+  image: string | null;
   products: Product[];
   created_at: string;
 }

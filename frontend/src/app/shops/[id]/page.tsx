@@ -3,6 +3,7 @@
 import {
   IconArchive,
   IconArrowLeft,
+  IconBuildingStore,
   IconLoader2,
   IconMoodEmpty,
   IconPackage,
@@ -107,22 +108,31 @@ export default function ShopDashboardPage({
                 <IconArrowLeft size={20} />
               </Button>
             </Link>
-            <div>
-              <h1 className="text-xl font-black tracking-tight uppercase">
-                {shop.name}
-              </h1>
-              <div className="flex items-center gap-2">
-                <Badge
-                  variant="outline"
-                  className="text-[10px] text-zinc-500 border-white/10 h-4 uppercase"
-                >
-                  Manager Dashboard
-                </Badge>
-                {shop.status === "draft" && (
-                  <Badge className="text-[10px] bg-orange-500/20 text-orange-400 border-orange-500/20 h-4">
-                    DRAFT
-                  </Badge>
+            <div className="flex items-center gap-3">
+              <div className="w-12 h-12 rounded-xl bg-white/5 border border-white/10 flex items-center justify-center overflow-hidden">
+                {shop.image ? (
+                  <img src={shop.image} alt={shop.name} className="w-full h-full object-cover" />
+                ) : (
+                  <IconBuildingStore size={24} className="text-zinc-600" />
                 )}
+              </div>
+              <div>
+                <h1 className="text-xl font-black tracking-tight uppercase">
+                  {shop.name}
+                </h1>
+                <div className="flex items-center gap-2">
+                  <Badge
+                    variant="outline"
+                    className="text-[10px] text-zinc-500 border-white/10 h-4 uppercase"
+                  >
+                    Manager Dashboard
+                  </Badge>
+                  {shop.status === "draft" && (
+                    <Badge className="text-[10px] bg-orange-500/20 text-orange-400 border-orange-500/20 h-4">
+                      DRAFT
+                    </Badge>
+                  )}
+                </div>
               </div>
             </div>
           </div>
@@ -206,10 +216,18 @@ export default function ShopDashboardPage({
                 className="group bg-zinc-900/40 border-white/5 backdrop-blur-sm overflow-hidden hover:border-indigo-500/50 transition-all duration-500 rounded-3xl"
               >
                 <div className="h-48 bg-gradient-to-br from-zinc-800 to-zinc-900 flex items-center justify-center relative">
-                  <IconPackage
-                    size={64}
-                    className="text-white/10 group-hover:scale-110 transition-transform duration-500"
-                  />
+                  {product.image ? (
+                    <img 
+                      src={product.image} 
+                      alt={product.name} 
+                      className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
+                    />
+                  ) : (
+                    <IconPackage
+                      size={64}
+                      className="text-white/10 group-hover:scale-110 transition-transform duration-500"
+                    />
+                  )}
                   <div className="absolute top-4 right-4">
                     <Badge className="bg-white text-black font-bold h-7 px-3 border-none shadow-xl">
                       ${product.price}

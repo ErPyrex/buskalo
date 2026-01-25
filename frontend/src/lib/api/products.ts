@@ -23,27 +23,25 @@ export async function getProducts(shopId?: string): Promise<Product[]> {
   }
 }
 
-export async function createProduct(data: any, token: string) {
+export async function createProduct(data: FormData, token: string) {
   const response = await fetch(`${BASE_URL}/market/products/`, {
     method: "POST",
     headers: {
-      "Content-Type": "application/json",
       Authorization: `Bearer ${token}`,
     },
-    body: JSON.stringify(data),
+    body: data,
   });
   if (!response.ok) throw new Error("Failed to create product");
   return response.json();
 }
 
-export async function updateProduct(id: number, data: any, token: string) {
+export async function updateProduct(id: number, data: FormData, token: string) {
   const response = await fetch(`${BASE_URL}/market/products/${id}/`, {
     method: "PATCH",
     headers: {
-      "Content-Type": "application/json",
       Authorization: `Bearer ${token}`,
     },
-    body: JSON.stringify(data),
+    body: data,
   });
   if (!response.ok) throw new Error("Failed to update product");
   return response.json();

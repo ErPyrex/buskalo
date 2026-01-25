@@ -186,8 +186,14 @@ export default function ProductSearch() {
                     }}
                     className="w-full flex items-center gap-4 p-3 rounded-xl hover:bg-white/5 transition-all text-left group"
                   >
-                    <div className="w-12 h-12 bg-zinc-900 rounded-lg flex items-center justify-center text-zinc-600 group-hover:bg-indigo-500/10 group-hover:text-indigo-400 transition-colors">
-                      {mode === "products" ? (
+                    <div className="w-12 h-12 bg-zinc-900 rounded-lg flex items-center justify-center text-zinc-600 group-hover:bg-indigo-500/10 group-hover:text-indigo-400 transition-colors overflow-hidden">
+                      {item.image ? (
+                        <img 
+                          src={item.image} 
+                          alt={item.name} 
+                          className="w-full h-full object-cover" 
+                        />
+                      ) : mode === "products" ? (
                         <IconPackage size={24} />
                       ) : (
                         <IconBuildingStore size={24} />

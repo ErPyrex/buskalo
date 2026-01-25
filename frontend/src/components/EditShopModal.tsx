@@ -1,6 +1,6 @@
 "use client";
 
-import { IconDeviceFloppy, IconLoader2, IconTrash } from "@tabler/icons-react";
+import { IconDeviceFloppy, IconLoader2, IconTrash, IconPhoto, IconX } from "@tabler/icons-react";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import {
@@ -52,6 +52,20 @@ export default function EditShopModal({
     description: "",
     location: "",
   });
+  const [image, setImage] = useState<File | null>(null);
+  const [imagePreview, setImagePreview] = useState<string | null>(null);
+
+  const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (file) {
+      setImage(file);
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        setImagePreview(reader.result as string);
+      };
+      reader.readAsDataURL(file);
+    }
+  };
 
   useEffect(() => {
     if (shop && open) {
@@ -60,6 +74,8 @@ export default function EditShopModal({
         description: shop.description || "",
         location: shop.location || "",
       });
+      setImagePreview(shop.image || null);
+      setImage(null);
     }
   }, [shop, open]);
 
@@ -69,7 +85,13 @@ export default function EditShopModal({
     setLoading(true);
 
     try {
-      await updateShop(shop.id, formData, token);
+      const data = new FormData();
+      data.append("name", formData.name);
+      data.append("description", formData.description);
+      data.append("location", formData.location);
+      if (image) data.append("image", image);
+
+      await updateShop(shop.id, data, token);
       onShopUpdated();
       onOpenChange(false);
     } catch (error) {
@@ -161,6 +183,35 @@ export default function EditShopModal({
                   setFormData({ ...formData, location: e.target.value })
                 }
               />
+            </div>
+
+            <div className="grid gap-2">
+              <Label className="text-zinc-400 text-xs font-bold uppercase tracking-wider">
+                Store Image
+              </Label>
+              <div className="flex items-center gap-4">
+                {imagePreview ? (
+                  <div className="relative w-20 h-20 rounded-xl overflow-hidden border border-white/10">
+                    <img src={imagePreview} alt="Preview" className="w-full h-full object-cover" />
+                    <button
+                      type="button"
+                      onClick={() => { setImage(null); setImagePreview(null); }}
+                      className="absolute top-1 right-1 p-1 bg-black/60 rounded-full text-white hover:bg-red-500 transition-colors"
+                    >
+                      <IconX size={12} />
+                    </button>
+                  </div>
+                ) : (
+                  <label className="flex flex-col items-center justify-center w-20 h-20 rounded-xl border border-dashed border-white/10 bg-white/5 hover:bg-white/10 cursor-pointer transition-colors">
+                    <IconPhoto size={24} className="text-zinc-500" />
+                    <input type="file" className="hidden" accept="image/*" onChange={handleImageChange} />
+                  </label>
+                )}
+                <div className="text-xs text-zinc-500">
+                  <p className="font-bold text-zinc-400">Update Store Banner</p>
+                  <p>Leave empty to keep current</p>
+                </div>
+              </div>
             </div>
           </div>
 

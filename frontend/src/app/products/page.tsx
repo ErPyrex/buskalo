@@ -51,10 +51,18 @@ export default async function ProductsPage() {
                 className="group bg-zinc-900/40 border-white/5 backdrop-blur-sm overflow-hidden hover:border-indigo-500/50 transition-all duration-500 hover:translate-y-[-4px]"
               >
                 <div className="h-48 bg-gradient-to-br from-zinc-800 to-zinc-900 flex items-center justify-center relative">
-                  <IconPackage
-                    size={64}
-                    className="text-white/10 group-hover:scale-110 transition-transform duration-500"
-                  />
+                  {product.image ? (
+                    <img 
+                      src={product.image} 
+                      alt={product.name} 
+                      className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
+                    />
+                  ) : (
+                    <IconPackage
+                      size={64}
+                      className="text-white/10 group-hover:scale-110 transition-transform duration-500"
+                    />
+                  )}
                   <div className="absolute inset-0 bg-black/20 group-hover:bg-transparent transition-colors" />
                   <div className="absolute top-4 right-4">
                     <Badge className="bg-indigo-600 hover:bg-indigo-600 border-none shadow-lg">
