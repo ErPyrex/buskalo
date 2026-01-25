@@ -13,38 +13,20 @@ export default async function ProductsPage() {
 
   return (
     <div className="min-h-screen bg-black text-white selection:bg-indigo-500/30">
-      {/* Header Space */}
-      <header className="border-b border-white/5 bg-zinc-950/50 backdrop-blur-xl sticky top-0 z-50">
-        <div className="container mx-auto px-6 py-4 flex items-center justify-between">
-          <div className="flex items-center gap-4">
-            <Link href="/">
-              <Button
-                variant="ghost"
-                size="icon"
-                className="text-zinc-400 hover:text-white"
-              >
-                <IconArrowLeft size={20} />
-              </Button>
-            </Link>
-            <h1 className="text-xl font-bold tracking-tight">
-              Explore Products
-            </h1>
-          </div>
-          <Badge variant="outline" className="text-zinc-500 border-white/10">
-            {products.length} {products.length === 1 ? "Product" : "Products"}
-          </Badge>
-        </div>
-      </header>
-
       <main className="container mx-auto px-6 py-12">
-        <div className="mb-12 space-y-4">
-          <h2 className="text-3xl md:text-5xl font-black tracking-tighter">
-            GLOBAL <span className="text-indigo-500">CATALOG</span>
-          </h2>
-          <p className="text-zinc-500 max-w-xl text-lg">
-            Discover the best products from all our stores. Quality and variety
-            in one place.
-          </p>
+        <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-12">
+          <div className="space-y-4">
+            <h1 className="text-3xl md:text-5xl font-black tracking-tighter">
+              CATÁLOGO <span className="text-indigo-500">GLOBAL</span>
+            </h1>
+            <p className="text-zinc-500 max-w-xl text-lg">
+              Descubre los mejores productos de todas nuestras tiendas. Calidad y variedad
+              en un solo lugar.
+            </p>
+          </div>
+          <Badge variant="outline" className="text-zinc-500 border-white/10 w-fit">
+            {products.length} {products.length === 1 ? "Producto" : "Productos"}
+          </Badge>
         </div>
 
         {products.length === 0 ? (
