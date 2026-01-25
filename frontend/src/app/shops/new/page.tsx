@@ -22,6 +22,8 @@ import { Textarea } from "@/components/ui/textarea";
 import { useAuth } from "@/context/AuthContext";
 import { createShop } from "@/lib/api/shops";
 import { compressImage } from "@/lib/utils/image";
+import { ImageCropper } from "@/components/ImageCropper";
+import { toast } from "sonner";
 
 export default function NewShopPage() {
   const [loading, setLoading] = useState<"active" | "draft" | null>(null);
@@ -38,19 +40,26 @@ export default function NewShopPage() {
     description: "",
     location: "", // Backend uses 'location', frontend UI said 'address'
   });
-  const [image, setImage] = useState<File | null>(null);
+  const [image, setImage] = useState<File | Blob | null>(null);
   const [imagePreview, setImagePreview] = useState<string | null>(null);
+  const [tempImage, setTempImage] = useState<string | null>(null);
 
   const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (file) {
-      setImage(file);
       const reader = new FileReader();
       reader.onloadend = () => {
-        setImagePreview(reader.result as string);
+        setTempImage(reader.result as string);
       };
       reader.readAsDataURL(file);
     }
+  };
+
+  const handleCropComplete = (croppedBlob: Blob) => {
+    setImage(croppedBlob);
+    const croppedUrl = URL.createObjectURL(croppedBlob);
+    setImagePreview(croppedUrl);
+    setTempImage(null);
   };
 
   const handleCreate = async (status: "active" | "draft") => {
@@ -74,6 +83,11 @@ export default function NewShopPage() {
       if (imageToUpload) data.append("image", imageToUpload);
 
       await createShop(data, token);
+      toast.success(status === "active" ? "¡Tienda lanzada!" : "Borrador guardado", {
+        description: status === "active" 
+          ? `¡Felicidades! ${formData.name} ya está abierta al público.`
+          : "Podrás finalizar la configuración más tarde.",
+      });
       setSuccess({ type: status });
       setTimeout(() => router.push("/"), 2000);
     } catch (err: any) {
@@ -81,6 +95,9 @@ export default function NewShopPage() {
         err.message ||
           `Could not ${status === "draft" ? "save" : "launch"} shop.`,
       );
+      toast.error("Error al crear la tienda", {
+        description: err.message || "Por favor, inténtalo de nuevo más tarde.",
+      });
       setLoading(null);
     }
   };
@@ -115,6 +132,14 @@ export default function NewShopPage() {
 
   return (
     <div className="min-h-screen bg-black flex flex-col items-center justify-center p-6 relative overflow-hidden">
+      {tempImage && (
+        <ImageCropper
+          image={tempImage}
+          onCropComplete={handleCropComplete}
+          onCancel={() => setTempImage(null)}
+          aspect={16 / 9}
+        />
+      )}
       <div className="absolute top-0 right-0 w-96 h-96 bg-indigo-600/10 rounded-full blur-[120px] -z-10" />
 
       <Link href="/" className="absolute top-8 left-8">

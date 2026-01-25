@@ -21,6 +21,7 @@ export const metadata: Metadata = {
 
 import Navbar from "@/components/Navbar";
 import { AuthProvider } from "@/context/AuthContext";
+import { Toaster } from "sonner";
 
 export default function RootLayout({
   children,
@@ -35,6 +36,20 @@ export default function RootLayout({
         <AuthProvider>
           <Navbar />
           <div className="pt-16">{children}</div>
+          <Toaster 
+            position="top-right" 
+            theme="dark" 
+            richColors 
+            closeButton
+            toastOptions={{
+              style: {
+                background: 'rgba(9, 9, 11, 0.8)',
+                backdropFilter: 'blur(12px)',
+                border: '1px solid rgba(255, 255, 255, 0.1)',
+                borderRadius: '16px',
+              },
+            }}
+          />
         </AuthProvider>
       </body>
     </html>

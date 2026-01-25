@@ -14,6 +14,7 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { useAuth } from "@/context/AuthContext";
 import { getShops, updateShop } from "@/lib/api/shops";
+import { toast } from "sonner";
 
 export default function MyShops() {
   const { user, token } = useAuth();
@@ -36,11 +37,17 @@ export default function MyShops() {
       const data = new FormData();
       data.append("status", "active");
       await updateShop(shopId, data, token);
+      toast.success("¡Tienda publicada!", {
+        description: "Tu negocio ahora es visible para todos los clientes.",
+      });
       setShops(
         shops.map((s) => (s.id === shopId ? { ...s, status: "active" } : s)),
       );
     } catch (error) {
       console.error("Failed to publish shop", error);
+      toast.error("Error al publicar", {
+        description: "No pudimos activar tu tienda en este momento.",
+      });
     } finally {
       setPublishing(null);
     }
