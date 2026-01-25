@@ -248,30 +248,36 @@ export default function NewShopPage() {
                   type="button"
                   variant="ghost"
                   className="text-zinc-500 hover:text-white flex-1"
-                  disabled={!!loading || compressing}
+                  disabled={loading !== null || compressing}
                   onClick={() => handleCreate("draft")}
                 >
-                  {loading === "draft" || (compressing && loading === "draft") ? (
-                    <IconLoader2 className="animate-spin" size={20} />
+                  {loading === "draft" ? (
+                    <div className="flex items-center gap-2">
+                      <IconLoader2 className="animate-spin" size={20} />
+                      {compressing && "Optimizing..."}
+                    </div>
                   ) : (
                     <span className="flex items-center gap-2">
                       <IconDeviceFloppy size={18} />
-                      {compressing && loading === "draft" ? "Optimizing..." : "Save as draft"}
+                      Save as draft
                     </span>
                   )}
                 </Button>
                 <Button
                   type="button"
                   className="bg-indigo-600 text-white hover:bg-indigo-500 font-bold rounded-xl px-8 h-12 flex-1 shadow-lg shadow-indigo-500/20 active:scale-95 transition-all flex items-center gap-2"
-                  disabled={!!loading || compressing}
+                  disabled={loading !== null || compressing}
                   onClick={() => handleCreate("active")}
                 >
-                  {loading === "active" || (compressing && loading === "active") ? (
-                    <IconLoader2 className="animate-spin" size={20} />
+                  {loading === "active" ? (
+                    <div className="flex items-center gap-2">
+                      <IconLoader2 className="animate-spin" size={20} />
+                      {compressing && "Optimizing..."}
+                    </div>
                   ) : (
                     <span className="flex items-center gap-2">
                       <IconRocket size={18} />
-                      {compressing && loading === "active" ? "Optimizing..." : "Launch Store"}
+                      Launch Store
                     </span>
                   )}
                 </Button>

@@ -4,6 +4,7 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { getShops } from "@/lib/api/shops";
+import { PremiumImage } from "@/components/PremiumImage";
 
 export const dynamic = "force-dynamic";
 
@@ -53,15 +54,17 @@ export default async function ShopsPage() {
                 key={shop.id}
                 className="group bg-zinc-900/40 border-white/5 backdrop-blur-sm overflow-hidden hover:border-indigo-500/50 transition-all duration-500 hover:translate-y-[-4px]"
               >
-                <CardHeader className="relative h-48 p-0 bg-gradient-to-br from-indigo-900/20 to-purple-900/20 flex items-center justify-center border-b border-white/5 overflow-hidden">
+                <CardHeader className="relative h-48 p-0 flex items-center justify-center border-b border-white/5 overflow-hidden">
                   {shop.image ? (
-                    <img 
+                    <PremiumImage 
                       src={shop.image} 
                       alt={shop.name} 
-                      className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
+                      className="group-hover:scale-110"
                     />
                   ) : (
-                    <IconBuildingStore size={48} className="text-indigo-400/50 group-hover:scale-110 transition-transform duration-500" />
+                    <div className="w-full h-full bg-gradient-to-br from-indigo-900/20 to-purple-900/20 flex items-center justify-center">
+                      <IconBuildingStore size={48} className="text-indigo-400/50 group-hover:scale-110 transition-transform duration-500" />
+                    </div>
                   )}
                   <div className="absolute top-4 right-4 flex gap-2">
                     <Badge className="bg-emerald-500/20 text-emerald-400 border-emerald-500/30">

@@ -12,6 +12,7 @@ import {
 } from "@tabler/icons-react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
+import { PremiumImage } from "@/components/PremiumImage";
 import { use, useCallback, useEffect, useState } from "react";
 import CreateProductModal from "@/components/CreateProductModal";
 import EditProductModal from "@/components/EditProductModal";
@@ -109,9 +110,9 @@ export default function ShopDashboardPage({
               </Button>
             </Link>
             <div className="flex items-center gap-3">
-              <div className="w-12 h-12 rounded-xl bg-white/5 border border-white/10 flex items-center justify-center overflow-hidden">
+              <div className="w-12 h-12 rounded-xl bg-white/5 border border-white/10 flex items-center justify-center overflow-hidden relative">
                 {shop.image ? (
-                  <img src={shop.image} alt={shop.name} className="w-full h-full object-cover" />
+                  <PremiumImage src={shop.image} alt={shop.name} />
                 ) : (
                   <IconBuildingStore size={24} className="text-zinc-600" />
                 )}
@@ -215,18 +216,20 @@ export default function ShopDashboardPage({
                 key={product.id}
                 className="group bg-zinc-900/40 border-white/5 backdrop-blur-sm overflow-hidden hover:border-indigo-500/50 transition-all duration-500 rounded-3xl"
               >
-                <div className="h-48 bg-gradient-to-br from-zinc-800 to-zinc-900 flex items-center justify-center relative">
+                <div className="h-48 flex items-center justify-center relative">
                   {product.image ? (
-                    <img 
+                    <PremiumImage 
                       src={product.image} 
                       alt={product.name} 
-                      className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
+                      className="group-hover:scale-110"
                     />
                   ) : (
-                    <IconPackage
-                      size={64}
-                      className="text-white/10 group-hover:scale-110 transition-transform duration-500"
-                    />
+                    <div className="w-full h-full bg-gradient-to-br from-zinc-800 to-zinc-900 flex items-center justify-center">
+                      <IconPackage
+                        size={64}
+                        className="text-white/10 group-hover:scale-110 transition-transform duration-500"
+                      />
+                    </div>
                   )}
                   <div className="absolute top-4 right-4">
                     <Badge className="bg-white text-black font-bold h-7 px-3 border-none shadow-xl">

@@ -4,6 +4,7 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { getProducts } from "@/lib/api/products";
+import { PremiumImage } from "@/components/PremiumImage";
 import type { Product } from "@/types";
 
 export const dynamic = "force-dynamic";
@@ -50,20 +51,21 @@ export default async function ProductsPage() {
                 key={product.id}
                 className="group bg-zinc-900/40 border-white/5 backdrop-blur-sm overflow-hidden hover:border-indigo-500/50 transition-all duration-500 hover:translate-y-[-4px]"
               >
-                <div className="h-48 bg-gradient-to-br from-zinc-800 to-zinc-900 flex items-center justify-center relative">
+                <div className="h-48 flex items-center justify-center relative">
                   {product.image ? (
-                    <img 
+                    <PremiumImage 
                       src={product.image} 
                       alt={product.name} 
-                      className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
+                      className="group-hover:scale-110"
                     />
                   ) : (
-                    <IconPackage
-                      size={64}
-                      className="text-white/10 group-hover:scale-110 transition-transform duration-500"
-                    />
+                    <div className="w-full h-full bg-gradient-to-br from-zinc-800 to-zinc-900 flex items-center justify-center">
+                      <IconPackage
+                        size={64}
+                        className="text-white/10 group-hover:scale-110 transition-transform duration-500"
+                      />
+                    </div>
                   )}
-                  <div className="absolute inset-0 bg-black/20 group-hover:bg-transparent transition-colors" />
                   <div className="absolute top-4 right-4">
                     <Badge className="bg-indigo-600 hover:bg-indigo-600 border-none shadow-lg">
                       ${product.price}

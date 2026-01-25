@@ -8,6 +8,7 @@ import {
 } from "@tabler/icons-react";
 import Link from "next/link";
 import { useEffect, useState } from "react";
+import { PremiumImage } from "@/components/PremiumImage";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
@@ -91,9 +92,9 @@ export default function MyShops() {
               <CardContent className="p-5 flex flex-col justify-between h-full gap-4">
                 <div className="flex items-start justify-between gap-4">
                   <div className="flex items-center gap-3 min-w-0">
-                    <div className="w-10 h-10 rounded-lg bg-white/5 border border-white/10 flex-shrink-0 flex items-center justify-center overflow-hidden">
+                    <div className="w-10 h-10 rounded-lg bg-white/5 border border-white/10 flex-shrink-0 flex items-center justify-center overflow-hidden relative">
                       {shop.image ? (
-                        <img src={shop.image} alt={shop.name} className="w-full h-full object-cover" />
+                        <PremiumImage src={shop.image} alt={shop.name} />
                       ) : (
                         <IconBuildingStore size={20} className="text-zinc-600" />
                       )}
