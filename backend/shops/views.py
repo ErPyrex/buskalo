@@ -1,4 +1,5 @@
 from rest_framework import viewsets, permissions
+from django.db import models
 from .models import Shop, Product, Category
 from .serializers import ShopSerializer, ProductSerializer, CategorySerializer
 
@@ -47,10 +48,26 @@ class ProductViewSet(viewsets.ModelViewSet):
     permission_classes = [permissions.IsAuthenticatedOrReadOnly, IsOwnerOrReadOnly]
 
     def get_queryset(self):
+        queryset = Product.objects.all()
         shop_id = self.request.query_params.get("shop_id")
+        search = self.request.query_params.get("search")
+
         if shop_id:
-            return Product.objects.filter(shop_id=shop_id)
-        return Product.objects.all()
+            queryset = queryset.filter(shop_id=shop_id)
+        
+        if search:
+            queryset = queryset.filter(
+                models.Q(name__icontains=search) | 
+                models.Q(description__icontains=search)
+            )
+
+        # Only products from active shops should be searchable publicly
+        # unless it's a specific shop filter which already handles its own logic 
+        # but let's be safe: for general search, only active shops.
+        if not shop_id:
+            queryset = queryset.filter(shop__status="active")
+
+        return queryset
 
 
 class CategoryViewSet(viewsets.ReadOnlyModelViewSet):

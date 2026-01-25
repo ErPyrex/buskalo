@@ -11,6 +11,7 @@ import {
 } from "@tabler/icons-react";
 import Link from "next/link";
 import MyShops from "@/components/MyShops";
+import ProductSearch from "@/components/ProductSearch";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
@@ -46,7 +47,7 @@ export default function Home() {
         </div>
       )}
 
-      <div className="z-10 text-center space-y-12 max-w-4xl">
+      <div className="z-10 text-center space-y-12 w-full max-w-4xl">
         <div className="space-y-6">
           <div className="flex justify-center gap-2 mb-4">
             <Badge
@@ -68,6 +69,10 @@ export default function Home() {
             <br />
             ARCHITECTURE
           </h1>
+
+          <div className="py-8">
+            <ProductSearch />
+          </div>
 
           <p className="text-zinc-400 text-lg md:text-xl max-w-2xl mx-auto leading-relaxed font-medium">
             Next.js 16 + Shadcn Lyra + Django Rest Framework.{" "}
