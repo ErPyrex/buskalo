@@ -27,6 +27,7 @@ class ProductSerializer(serializers.ModelSerializer):
             "image",
             "price",
             "stock",
+            "is_infinite_stock",
             "created_at",
         )
         read_only_fields = ("created_at",)
