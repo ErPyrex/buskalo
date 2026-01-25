@@ -13,12 +13,17 @@ class Category(models.Model):
 
 
 class Shop(models.Model):
+    STATUS_CHOICES = [
+        ("draft", "Draft"),
+        ("active", "Active"),
+    ]
     owner = models.ForeignKey(
         settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name="shops"
     )
     name = models.CharField(max_length=255)
     location = models.CharField(max_length=255)
     description = models.TextField(blank=True)
+    status = models.CharField(max_length=10, choices=STATUS_CHOICES, default="active")
     created_at = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):

@@ -40,6 +40,7 @@ class ShopSerializer(serializers.ModelSerializer):
             "name",
             "location",
             "description",
+            "status",
             "products",
             "created_at",
         )

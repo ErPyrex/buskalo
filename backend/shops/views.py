@@ -21,9 +21,24 @@ class ShopViewSet(viewsets.ModelViewSet):
         serializer.save(owner=self.request.user)
 
     def get_queryset(self):
-        # Optional: could limit to current user for listing?
-        # But usually you want to see all shops.
-        return Shop.objects.all()
+        queryset = Shop.objects.all()
+        owner_id = self.request.query_params.get("owner")
+        status = self.request.query_params.get("status")
+
+        if owner_id:
+            queryset = queryset.filter(owner_id=owner_id)
+            # If a status is specified, filter by it. 
+            # If not, and it's NOT the owner requesting, only active.
+            # If it IS the owner, allow seeing drafts.
+            if status:
+                queryset = queryset.filter(status=status)
+            elif str(self.request.user.id) != owner_id:
+                queryset = queryset.filter(status="active")
+        else:
+            # General listing: only active shops
+            queryset = queryset.filter(status="active")
+
+        return queryset
 
 
 class ProductViewSet(viewsets.ModelViewSet):
