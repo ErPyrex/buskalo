@@ -229,13 +229,13 @@ export default function ProductSearch() {
                     <div className="text-right">
                       {mode === "products" ? (
                         <>
-                          <p className="text-white font-black text-sm">
-                            ${item.price}
+                          <p className={`font-black text-sm ${parseFloat(item.price.toString()) === 0 ? "text-emerald-400" : "text-white"}`}>
+                            {parseFloat(item.price.toString()) === 0 ? "GRATIS" : `$${item.price}`}
                           </p>
                           <p
-                            className={`text-[10px] font-bold uppercase ${item.stock > 0 ? "text-green-500" : "text-red-500"}`}
+                            className={`text-[10px] font-bold uppercase ${item.is_infinite_stock || item.stock > 0 ? "text-green-500" : "text-red-500"}`}
                           >
-                            {item.stock > 0 ? "In Stock" : "Out of Stock"}
+                            {item.is_infinite_stock ? "Stock Disponible" : item.stock > 0 ? "En Stock" : "Sin Stock"}
                           </p>
                         </>
                       ) : (
