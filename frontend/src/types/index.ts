@@ -15,6 +15,7 @@ export interface Product {
   image: string | null;
   price: string; // Decimal is returned as string in JSON
   stock: number;
+  is_infinite_stock: boolean;
   created_at: string;
 }
 
