@@ -13,6 +13,8 @@ import {
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
+import { toast } from "sonner";
+import { ImageCropper } from "@/components/ImageCropper";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
@@ -22,8 +24,6 @@ import { Textarea } from "@/components/ui/textarea";
 import { useAuth } from "@/context/AuthContext";
 import { createShop } from "@/lib/api/shops";
 import { compressImage } from "@/lib/utils/image";
-import { ImageCropper } from "@/components/ImageCropper";
-import { toast } from "sonner";
 
 export default function NewShopPage() {
   const [loading, setLoading] = useState<"active" | "draft" | null>(null);
@@ -83,11 +83,15 @@ export default function NewShopPage() {
       if (imageToUpload) data.append("image", imageToUpload);
 
       await createShop(data, token);
-      toast.success(status === "active" ? "¡Tienda lanzada!" : "Borrador guardado", {
-        description: status === "active" 
-          ? `¡Felicidades! ${formData.name} ya está abierta al público.`
-          : "Podrás finalizar la configuración más tarde.",
-      });
+      toast.success(
+        status === "active" ? "¡Tienda lanzada!" : "Borrador guardado",
+        {
+          description:
+            status === "active"
+              ? `¡Felicidades! ${formData.name} ya está abierta al público.`
+              : "Podrás finalizar la configuración más tarde.",
+        },
+      );
       setSuccess({ type: status });
       setTimeout(() => router.push("/"), 2000);
     } catch (err: any) {

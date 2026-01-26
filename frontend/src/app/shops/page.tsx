@@ -8,7 +8,7 @@ import {
   IconX,
 } from "@tabler/icons-react";
 import Link from "next/link";
-import { useEffect, useState, useMemo } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { PremiumImage } from "@/components/PremiumImage";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -39,10 +39,11 @@ export default function ShopsPage() {
   const filteredShops = useMemo(() => {
     if (!searchTerm.trim()) return shops;
     const search = searchTerm.toLowerCase();
-    return shops.filter((shop) => 
-      shop.name.toLowerCase().includes(search) ||
-      shop.description?.toLowerCase().includes(search) ||
-      shop.location?.toLowerCase().includes(search)
+    return shops.filter(
+      (shop) =>
+        shop.name.toLowerCase().includes(search) ||
+        shop.description?.toLowerCase().includes(search) ||
+        shop.location?.toLowerCase().includes(search),
     );
   }, [shops, searchTerm]);
 
@@ -52,7 +53,8 @@ export default function ShopsPage() {
         <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-8 mb-16">
           <div className="space-y-4 flex-1">
             <h1 className="text-4xl md:text-6xl font-black tracking-tighter uppercase italic">
-              NUESTRAS <span className="text-indigo-500 not-italic">TIENDAS</span>
+              NUESTRAS{" "}
+              <span className="text-indigo-500 not-italic">TIENDAS</span>
             </h1>
             <p className="text-zinc-400 max-w-xl text-lg font-medium leading-relaxed">
               Explora los negocios locales que confían en Buskalo! para conectar
@@ -74,6 +76,7 @@ export default function ShopsPage() {
               />
               {searchTerm && (
                 <button
+                  type="button"
                   onClick={() => setSearchTerm("")}
                   className="absolute inset-y-0 right-4 flex items-center text-zinc-500 hover:text-white transition-colors"
                 >
@@ -82,7 +85,9 @@ export default function ShopsPage() {
               )}
             </div>
             <div className="hidden sm:flex flex-col items-end gap-1 px-2">
-              <span className="text-[10px] font-black uppercase tracking-[0.2em] text-zinc-600">Committed</span>
+              <span className="text-[10px] font-black uppercase tracking-[0.2em] text-zinc-600">
+                Committed
+              </span>
               <Badge
                 variant="outline"
                 className="text-white border-white/10 bg-white/5 backdrop-blur-md px-4 py-1.5 rounded-xl font-black text-xs"
@@ -96,7 +101,10 @@ export default function ShopsPage() {
         {loading ? (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
             {[...Array(6)].map((_, i) => (
-              <div key={i} className="h-[450px] bg-zinc-900/40 rounded-3xl animate-pulse border border-white/5" />
+              <div
+                key={`skeleton-${i}`}
+                className="h-[450px] bg-zinc-900/40 rounded-3xl animate-pulse border border-white/5"
+              />
             ))}
           </div>
         ) : filteredShops.length === 0 ? (
@@ -112,9 +120,9 @@ export default function ShopsPage() {
                 Intenta con otros términos o busca en otro lugar.
               </p>
               {searchTerm && (
-                <Button 
+                <Button
                   onClick={() => setSearchTerm("")}
-                  variant="link" 
+                  variant="link"
                   className="text-indigo-500 font-bold uppercase tracking-widest text-xs mt-4"
                 >
                   Ver todas las tiendas
@@ -159,10 +167,21 @@ export default function ShopsPage() {
                       </CardTitle>
                       <div className="flex items-center gap-1.5 text-yellow-500/80">
                         {[...Array(4)].map((_, i) => (
-                          <IconStar key={i} size={14} fill="currentColor" strokeWidth={0} />
+                          <IconStar
+                            key={`star-${i}`}
+                            size={14}
+                            fill="currentColor"
+                            strokeWidth={0}
+                          />
                         ))}
-                        <IconStar size={14} className="text-zinc-800" strokeWidth={2} />
-                        <span className="text-[10px] font-black text-zinc-500 ml-1 uppercase tracking-tighter italic">Top Rated</span>
+                        <IconStar
+                          size={14}
+                          className="text-zinc-800"
+                          strokeWidth={2}
+                        />
+                        <span className="text-[10px] font-black text-zinc-500 ml-1 uppercase tracking-tighter italic">
+                          Top Rated
+                        </span>
                       </div>
                     </div>
 

@@ -160,23 +160,23 @@ if USE_S3:
     AWS_STORAGE_BUCKET_NAME = os.getenv("AWS_STORAGE_BUCKET_NAME")
     AWS_S3_ENDPOINT_URL = os.getenv("AWS_S3_ENDPOINT_URL")
     AWS_S3_REGION_NAME = "auto"  # R2 uses 'auto'
-    
+
     # Custom Domain (for public R2 access)
     AWS_S3_CUSTOM_DOMAIN = os.getenv("AWS_S3_CUSTOM_DOMAIN")
-    
+
     # S3 Settings
     AWS_S3_FILE_OVERWRITE = False
     AWS_DEFAULT_ACL = "public-read"
     AWS_S3_VERIFY = True
-    
+
     # Cache Control (1 year)
     AWS_S3_OBJECT_PARAMETERS = {
-        'CacheControl': 'max-age=31536000',
+        "CacheControl": "max-age=31536000",
     }
-    
+
     # Disable signature in URLs for perfect browser caching (since bucket is now public)
     AWS_QUERYSTRING_AUTH = False
-    
+
     # Use S3 for Media files
     STORAGES = {
         "default": {

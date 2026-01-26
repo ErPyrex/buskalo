@@ -28,7 +28,7 @@ class ShopViewSet(viewsets.ModelViewSet):
 
         if owner_id:
             queryset = queryset.filter(owner_id=owner_id)
-            # If a status is specified, filter by it. 
+            # If a status is specified, filter by it.
             # If not, and it's NOT the owner requesting, only active.
             # If it IS the owner, allow seeing drafts.
             if status:
@@ -38,12 +38,12 @@ class ShopViewSet(viewsets.ModelViewSet):
         else:
             # General listing: only active shops
             queryset = queryset.filter(status="active")
-        
+
         search = self.request.query_params.get("search")
         if search:
             queryset = queryset.filter(
-                models.Q(name__icontains=search) | 
-                models.Q(description__icontains=search)
+                models.Q(name__icontains=search)
+                | models.Q(description__icontains=search)
             )
 
         return queryset
@@ -61,15 +61,15 @@ class ProductViewSet(viewsets.ModelViewSet):
 
         if shop_id:
             queryset = queryset.filter(shop_id=shop_id)
-        
+
         if search:
             queryset = queryset.filter(
-                models.Q(name__icontains=search) | 
-                models.Q(description__icontains=search)
+                models.Q(name__icontains=search)
+                | models.Q(description__icontains=search)
             )
 
         # Only products from active shops should be searchable publicly
-        # unless it's a specific shop filter which already handles its own logic 
+        # unless it's a specific shop filter which already handles its own logic
         # but let's be safe: for general search, only active shops.
         if not shop_id:
             queryset = queryset.filter(shop__status="active")

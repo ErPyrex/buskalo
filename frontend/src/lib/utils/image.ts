@@ -16,17 +16,13 @@ export async function compressImage(file: File | Blob) {
     );
 
     // Create a new file with .webp extension
-    const fileName = (file as File).name 
-      ? (file as File).name.replace(/\.[^/.]+$/, "") 
+    const fileName = (file as File).name
+      ? (file as File).name.replace(/\.[^/.]+$/, "")
       : "image";
 
-    return new File(
-      [compressedFile],
-      `${fileName}.webp`,
-      {
-        type: "image/webp",
-      },
-    );
+    return new File([compressedFile], `${fileName}.webp`, {
+      type: "image/webp",
+    });
   } catch (error) {
     console.error("Compression error:", error);
     return file as File; // Fallback to original

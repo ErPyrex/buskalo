@@ -8,13 +8,13 @@ import {
 } from "@tabler/icons-react";
 import Link from "next/link";
 import { useEffect, useState } from "react";
+import { toast } from "sonner";
 import { PremiumImage } from "@/components/PremiumImage";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { useAuth } from "@/context/AuthContext";
 import { getShops, updateShop } from "@/lib/api/shops";
-import { toast } from "sonner";
 
 export default function MyShops() {
   const { user, token } = useAuth();

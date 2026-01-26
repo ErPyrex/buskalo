@@ -4,15 +4,14 @@ from django.db import migrations, models
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
-        ('shops', '0003_product_image_shop_image'),
+        ("shops", "0003_product_image_shop_image"),
     ]
 
     operations = [
         migrations.AddField(
-            model_name='product',
-            name='is_infinite_stock',
+            model_name="product",
+            name="is_infinite_stock",
             field=models.BooleanField(default=False),
         ),
     ]

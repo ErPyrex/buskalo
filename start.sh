@@ -92,6 +92,13 @@ stop() {
          echo -e "${YELLOW}Limpiando procesos huerfanos de Django...${NC}"
          pkill -f "manage.py runserver"
     fi
+    if pgrep -f "next-server|pnpm dev" > /dev/null; then
+         echo -e "${YELLOW}Limpiando procesos huerfanos de Next.js...${NC}"
+         pkill -f "next-server"
+         pkill -f "pnpm dev"
+         # Matar procesos de node asociados al frontend específicamente
+         pkill -f "node $FRONTEND_DIR"
+    fi
 }
 
 case "$1" in

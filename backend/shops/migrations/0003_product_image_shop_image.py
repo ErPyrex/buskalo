@@ -4,20 +4,19 @@ from django.db import migrations, models
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
-        ('shops', '0002_shop_status'),
+        ("shops", "0002_shop_status"),
     ]
 
     operations = [
         migrations.AddField(
-            model_name='product',
-            name='image',
-            field=models.ImageField(blank=True, null=True, upload_to='products/'),
+            model_name="product",
+            name="image",
+            field=models.ImageField(blank=True, null=True, upload_to="products/"),
         ),
         migrations.AddField(
-            model_name='shop',
-            name='image',
-            field=models.ImageField(blank=True, null=True, upload_to='shops/'),
+            model_name="shop",
+            name="image",
+            field=models.ImageField(blank=True, null=True, upload_to="shops/"),
         ),
     ]

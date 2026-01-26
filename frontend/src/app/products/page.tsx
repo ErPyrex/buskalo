@@ -1,7 +1,13 @@
 "use client";
 
-import { IconArchive, IconMapPin, IconPackage, IconSearch, IconX } from "@tabler/icons-react";
-import { useEffect, useState, useMemo } from "react";
+import {
+  IconArchive,
+  IconMapPin,
+  IconPackage,
+  IconSearch,
+  IconX,
+} from "@tabler/icons-react";
+import { useEffect, useMemo, useState } from "react";
 import { PremiumImage } from "@/components/PremiumImage";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -33,11 +39,12 @@ export default function ProductsPage() {
   const filteredProducts = useMemo(() => {
     if (!searchTerm.trim()) return products;
     const search = searchTerm.toLowerCase();
-    return products.filter((product) => 
-      product.name.toLowerCase().includes(search) ||
-      product.description?.toLowerCase().includes(search) ||
-      product.category_name?.toLowerCase().includes(search) ||
-      product.shop_name?.toLowerCase().includes(search)
+    return products.filter(
+      (product) =>
+        product.name.toLowerCase().includes(search) ||
+        product.description?.toLowerCase().includes(search) ||
+        product.category_name?.toLowerCase().includes(search) ||
+        product.shop_name?.toLowerCase().includes(search),
     );
   }, [products, searchTerm]);
 
@@ -47,7 +54,8 @@ export default function ProductsPage() {
         <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-8 mb-16">
           <div className="space-y-4 flex-1">
             <h1 className="text-4xl md:text-6xl font-black tracking-tighter uppercase italic">
-              CATÁLOGO <span className="text-indigo-500 not-italic">GLOBAL</span>
+              CATÁLOGO{" "}
+              <span className="text-indigo-500 not-italic">GLOBAL</span>
             </h1>
             <p className="text-zinc-500 max-w-xl text-lg font-medium leading-relaxed">
               Descubre los mejores productos de todas nuestras tiendas. Calidad
@@ -69,6 +77,7 @@ export default function ProductsPage() {
               />
               {searchTerm && (
                 <button
+                  type="button"
                   onClick={() => setSearchTerm("")}
                   className="absolute inset-y-0 right-4 flex items-center text-zinc-500 hover:text-white transition-colors"
                 >
@@ -77,7 +86,9 @@ export default function ProductsPage() {
               )}
             </div>
             <div className="hidden sm:flex flex-col items-end gap-1 px-2">
-              <span className="text-[10px] font-black uppercase tracking-[0.2em] text-zinc-600">Inventory</span>
+              <span className="text-[10px] font-black uppercase tracking-[0.2em] text-zinc-600">
+                Inventory
+              </span>
               <Badge
                 variant="outline"
                 className="text-white border-white/10 bg-white/5 backdrop-blur-md px-4 py-1.5 rounded-xl font-black text-xs"
@@ -91,7 +102,10 @@ export default function ProductsPage() {
         {loading ? (
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
             {[...Array(8)].map((_, i) => (
-              <div key={i} className="h-[400px] bg-zinc-900/40 rounded-3xl animate-pulse border border-white/5" />
+              <div
+                key={`skeleton-${i}`}
+                className="h-[400px] bg-zinc-900/40 rounded-3xl animate-pulse border border-white/5"
+              />
             ))}
           </div>
         ) : filteredProducts.length === 0 ? (
@@ -107,9 +121,9 @@ export default function ProductsPage() {
                 Intenta con otros términos o limpia tu búsqueda.
               </p>
               {searchTerm && (
-                <Button 
+                <Button
                   onClick={() => setSearchTerm("")}
-                  variant="link" 
+                  variant="link"
                   className="text-indigo-500 font-bold uppercase tracking-widest text-xs mt-4"
                 >
                   Ver todo el catálogo
@@ -140,8 +154,12 @@ export default function ProductsPage() {
                     </div>
                   )}
                   <div className="absolute top-4 right-4 z-10">
-                    <Badge className={`${parseFloat(product.price.toString()) === 0 ? "bg-emerald-500/90 text-white" : "bg-indigo-600/90 text-white"} backdrop-blur-md border-none shadow-2xl font-black px-3 py-1 text-xs tracking-tighter rounded-lg`}>
-                      {parseFloat(product.price.toString()) === 0 ? "GRATIS" : `$${product.price}`}
+                    <Badge
+                      className={`${parseFloat(product.price.toString()) === 0 ? "bg-emerald-500/90 text-white" : "bg-indigo-600/90 text-white"} backdrop-blur-md border-none shadow-2xl font-black px-3 py-1 text-xs tracking-tighter rounded-lg`}
+                    >
+                      {parseFloat(product.price.toString()) === 0
+                        ? "GRATIS"
+                        : `$${product.price}`}
                     </Badge>
                   </div>
                 </div>
@@ -180,11 +198,9 @@ export default function ProductsPage() {
                       <div className="flex items-center gap-2 text-zinc-400">
                         <IconArchive size={14} className="text-indigo-500/50" />
                         <span className="text-[10px] font-bold uppercase tracking-wider">
-                          {product.is_infinite_stock ? (
-                            "Stock Disponible"
-                          ) : (
-                            `${product.stock} disponibles`
-                          )}
+                          {product.is_infinite_stock
+                            ? "Stock Disponible"
+                            : `${product.stock} disponibles`}
                         </span>
                       </div>
                       {product.shop_location && (

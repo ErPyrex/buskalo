@@ -232,8 +232,12 @@ export default function ShopDashboardPage({
                     </div>
                   )}
                   <div className="absolute top-4 right-4">
-                    <Badge className={`${parseFloat(product.price.toString()) === 0 ? "bg-emerald-500 text-white" : "bg-white text-black"} font-bold h-7 px-3 border-none shadow-xl`}>
-                      {parseFloat(product.price.toString()) === 0 ? "GRATIS" : `$${product.price}`}
+                    <Badge
+                      className={`${parseFloat(product.price.toString()) === 0 ? "bg-emerald-500 text-white" : "bg-white text-black"} font-bold h-7 px-3 border-none shadow-xl`}
+                    >
+                      {parseFloat(product.price.toString()) === 0
+                        ? "GRATIS"
+                        : `$${product.price}`}
                     </Badge>
                   </div>
                 </div>
@@ -264,11 +268,9 @@ export default function ShopDashboardPage({
                     <div className="flex items-center gap-2 text-zinc-400">
                       <IconArchive size={16} />
                       <span className="text-xs font-bold uppercase tracking-wider">
-                        {product.is_infinite_stock ? (
-                          "Stock Disponible"
-                        ) : (
-                          `${product.stock} Unidades`
-                        )}
+                        {product.is_infinite_stock
+                          ? "Stock Disponible"
+                          : `${product.stock} Unidades`}
                       </span>
                     </div>
                     <Button

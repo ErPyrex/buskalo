@@ -1,10 +1,10 @@
 "use client";
 
-import { useState, useCallback } from "react";
+import { IconCheck, IconRotate, IconX, IconZoomIn } from "@tabler/icons-react";
+import { useCallback, useState } from "react";
+import type { Area, Point } from "react-easy-crop";
 import Cropper from "react-easy-crop";
-import type { Point, Area } from "react-easy-crop";
 import { Button } from "@/components/ui/button";
-import { IconCheck, IconX, IconZoomIn, IconRotate } from "@tabler/icons-react";
 import getCroppedImg from "@/lib/utils/cropImage";
 
 interface ImageCropperProps {
@@ -38,10 +38,10 @@ export function ImageCropper({
   };
 
   const onCropCompleteLocal = useCallback(
-    (recalculatedCroppedArea: Area, recalculatedCroppedAreaPixels: Area) => {
+    (_recalculatedCroppedArea: Area, recalculatedCroppedAreaPixels: Area) => {
       setCroppedAreaPixels(recalculatedCroppedAreaPixels);
     },
-    []
+    [],
   );
 
   const handleDone = async () => {
@@ -50,7 +50,7 @@ export function ImageCropper({
         const croppedImage = await getCroppedImg(
           image,
           croppedAreaPixels,
-          rotation
+          rotation,
         );
         if (croppedImage) {
           onCropComplete(croppedImage);
@@ -143,7 +143,7 @@ export function ImageCropper({
           </Button>
         </div>
       </div>
-      
+
       <p className="mt-4 text-xs text-zinc-500 font-medium tracking-wide">
         ARRASTRA PARA ENCUADRAR • PELLIZCA O USA EL SLIDER PARA HACER ZOOM
       </p>

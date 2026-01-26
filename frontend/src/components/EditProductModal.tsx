@@ -8,6 +8,8 @@ import {
   IconX,
 } from "@tabler/icons-react";
 import { useEffect, useState } from "react";
+import { toast } from "sonner";
+import { ImageCropper } from "@/components/ImageCropper";
 import {
   AlertDialog,
   AlertDialogAction,
@@ -20,6 +22,7 @@ import {
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
 import { Button } from "@/components/ui/button";
+import { Checkbox } from "@/components/ui/checkbox";
 import {
   Dialog,
   DialogContent,
@@ -38,7 +41,6 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { Textarea } from "@/components/ui/textarea";
-import { Checkbox } from "@/components/ui/checkbox";
 import { useAuth } from "@/context/AuthContext";
 import {
   deleteProduct,
@@ -46,8 +48,6 @@ import {
   updateProduct,
 } from "@/lib/api/products";
 import { compressImage } from "@/lib/utils/image";
-import { ImageCropper } from "@/components/ImageCropper";
-import { toast } from "sonner";
 import type { Product } from "@/types";
 
 interface EditProductModalProps {
@@ -110,8 +110,8 @@ export default function EditProductModal({
       if (value === "") value = "0";
     }
 
-    const numValue = parseInt(value);
-    if (!isNaN(numValue) && numValue >= 1) {
+    const numValue = parseInt(value, 10);
+    if (!Number.isNaN(numValue) && numValue >= 1) {
       setIsInfinite(false);
     }
 
@@ -192,7 +192,8 @@ export default function EditProductModal({
     try {
       await deleteProduct(product.id, token);
       toast.success("Producto eliminado", {
-        description: "El producto ha sido removido del catálogo permanentemente.",
+        description:
+          "El producto ha sido removido del catálogo permanentemente.",
       });
       onProductUpdated();
       onOpenChange(false);
@@ -348,7 +349,6 @@ export default function EditProductModal({
                   )}
                 </div>
               </div>
-
 
               <div className="grid gap-2">
                 <Label className="text-zinc-400 text-[10px] font-bold uppercase tracking-wider">

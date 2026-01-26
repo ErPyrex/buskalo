@@ -9,6 +9,8 @@ import {
 } from "@tabler/icons-react";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
+import { toast } from "sonner";
+import { ImageCropper } from "@/components/ImageCropper";
 import {
   AlertDialog,
   AlertDialogAction,
@@ -35,8 +37,6 @@ import { Textarea } from "@/components/ui/textarea";
 import { useAuth } from "@/context/AuthContext";
 import { deleteShop, updateShop } from "@/lib/api/shops";
 import { compressImage } from "@/lib/utils/image";
-import { ImageCropper } from "@/components/ImageCropper";
-import { toast } from "sonner";
 
 interface EditShopModalProps {
   shop: any;
