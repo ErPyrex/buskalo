@@ -82,6 +82,10 @@ pnpm dev
 
 ---
 
+### Alternative: Docker
+
+Read the [README_DOCKER.md](README_DOCKER.md) file for more information.
+
 ## 🧹 Code Quality
 
 We use **Biome** for all formatting and linting needs. It's significantly faster than Prettier/ESLint.

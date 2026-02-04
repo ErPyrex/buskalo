@@ -6,7 +6,10 @@ export async function login(credentials: any) {
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify(credentials),
   });
-  if (!response.ok) throw new Error("Invalid credentials");
+  if (!response.ok) {
+    const errorData = await response.json().catch(() => ({}));
+    throw new Error(errorData.detail || errorData.error || "Invalid credentials");
+  }
   return response.json();
 }
 
@@ -16,7 +19,12 @@ export async function register(data: any) {
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify(data),
   });
-  if (!response.ok) throw new Error("Registration failed");
+  if (!response.ok) {
+    const errorData = await response.json().catch(() => ({}));
+    // DRF typically returns error details in the response body
+    const errorMessage = Object.values(errorData).flat().join(" ") || "Registration failed";
+    throw new Error(errorMessage);
+  }
   return response.json();
 }
 
