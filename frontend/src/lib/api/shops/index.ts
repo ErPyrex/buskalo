@@ -30,7 +30,7 @@ export async function getShops(params?: {
     `${BASE_URL}/market/shops/?${query.toString()}`,
     {
       headers,
-    }
+    },
   );
   if (!response.ok) throw new Error("Failed to fetch shops");
   return response.json();

@@ -52,9 +52,7 @@ class ShopViewSet(viewsets.ModelViewSet):
             # 1. All their own shops (Draft or Active)
             # 2. Active shops from everyone else
             # We use a Q object to combine these
-            queryset = queryset.filter(
-                models.Q(owner=user) | models.Q(status="active")
-            )
+            queryset = queryset.filter(models.Q(owner=user) | models.Q(status="active"))
         else:
             # Guests only see active shops
             queryset = queryset.filter(status="active")
@@ -62,14 +60,15 @@ class ShopViewSet(viewsets.ModelViewSet):
         # Apply optional filters
         if owner_id:
             queryset = queryset.filter(owner_id=owner_id)
-        
+
         if status_param:
             queryset = queryset.filter(status=status_param)
 
         search = self.request.query_params.get("search")
         if search:
             queryset = queryset.filter(
-                models.Q(name__icontains=search) | models.Q(description__icontains=search)
+                models.Q(name__icontains=search)
+                | models.Q(description__icontains=search)
             )
 
         return queryset
@@ -90,7 +89,8 @@ class ProductViewSet(viewsets.ModelViewSet):
 
         if search:
             queryset = queryset.filter(
-                models.Q(name__icontains=search) | models.Q(description__icontains=search)
+                models.Q(name__icontains=search)
+                | models.Q(description__icontains=search)
             )
 
         if not shop_id:

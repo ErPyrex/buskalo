@@ -1,0 +1,28 @@
+services:
+  # Backend Web Service
+  - type: web
+    name: buskalo-backend
+    env: python
+    buildCommand: "./render-build.sh"
+    startCommand: "gunicorn config.wsgi:application"
+    rootDir: backend
+    envVars:
+      - key: DATABASE_URL
+        fromDatabase:
+          name: buskalo-db
+          property: connectionString
+      - key: SECRET_KEY
+        generateValue: true
+      - key: DEBUG
+        value: "False"
+      - key: ALLOWED_HOSTS
+        value: "*" # You can restrict this later to your specific domains
+      - key: PYTHON_VERSION
+        value: 3.11.0 # Adjust based on your preferred version
+
+# Postgres Database
+databases:
+  - name: buskalo-db
+    databaseName: buskalo
+    user: buskalo_user
+    plan: free # Change to starter/standard for production

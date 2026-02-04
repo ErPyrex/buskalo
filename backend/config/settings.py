@@ -15,6 +15,8 @@ from datetime import timedelta
 import os
 from dotenv import load_dotenv
 
+import dj_database_url
+
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -25,12 +27,16 @@ load_dotenv(os.path.join(BASE_DIR, ".env"))
 # See https://docs.djangoproject.com/en/6.0/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = "django-insecure-of4#ws$8vmq&pkdufrh+1i$4uz!jv#o0*sd8orh1tt0c$)x_6i"
+SECRET_KEY = os.getenv(
+    "SECRET_KEY", "django-insecure-of4#ws$8vmq&pkdufrh+1i$4uz!jv#o0*sd8orh1tt0c$)x_6i"
+)
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = os.getenv("DEBUG", "True") == "True"
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = [os.getenv("RENDER_EXTERNAL_HOSTNAME", "127.0.0.1"), "localhost"]
+if os.getenv("ALLOWED_HOSTS"):
+    ALLOWED_HOSTS.extend(os.getenv("ALLOWED_HOSTS").split(","))
 
 
 # Application definition
@@ -52,6 +58,7 @@ INSTALLED_APPS = [
 
 MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",
+    "whitenoise.middleware.WhiteNoiseMiddleware",
     "django.contrib.sessions.middleware.SessionMiddleware",
     "corsheaders.middleware.CorsMiddleware",
     "django.middleware.common.CommonMiddleware",
@@ -85,16 +92,16 @@ WSGI_APPLICATION = "config.wsgi.application"
 # https://docs.djangoproject.com/en/6.0/ref/settings/#databases
 
 DATABASES = {
-    "default": {
-        "ENGINE": "django.db.backends.postgresql",
-        "NAME": os.getenv("DB_NAME", "buskalo"),
-        "USER": os.getenv("DB_USER", "postgres"),
-        "PASSWORD": os.getenv("DB_PASSWORD", "postgres"),
-        "HOST": os.getenv("DB_HOST", "db"),
-        "PORT": os.getenv("DB_PORT", "5432"),
-    }
+    "default": dj_database_url.config(
+        default=os.getenv(
+            "DATABASE_URL",
+            f"postgres://{os.getenv('DB_USER', 'postgres')}:{os.getenv('DB_PASSWORD', 'postgres')}@{os.getenv('DB_HOST', 'db')}:{os.getenv('DB_PORT', '5432')}/{os.getenv('DB_NAME', 'buskalo')}",
+        ),
+        conn_max_age=600,
+    )
 }
-if not os.getenv("DB_NAME"):
+
+if not os.getenv("DATABASE_URL") and not os.getenv("DB_NAME"):
     DATABASES = {
         "default": {
             "ENGINE": "django.db.backends.sqlite3",
@@ -140,8 +147,14 @@ AUTH_USER_MODEL = "users.User"
 # https://docs.djangoproject.com/en/6.0/howto/static-files/
 
 STATIC_URL = "static/"
+STATIC_ROOT = os.path.join(BASE_DIR, "staticfiles")
 
-CORS_ALLOW_ALL_ORIGINS = True
+if not DEBUG:
+    STATICFILES_STORAGE = "whitenoise.storage.CompressedManifestStaticFilesStorage"
+
+CORS_ALLOW_ALL_ORIGINS = os.getenv("CORS_ALLOW_ALL_ORIGINS", "True") == "True"
+if os.getenv("CORS_ALLOWED_ORIGINS"):
+    CORS_ALLOWED_ORIGINS = os.getenv("CORS_ALLOWED_ORIGINS").split(",")
 
 REST_FRAMEWORK = {
     "DEFAULT_AUTHENTICATION_CLASSES": (

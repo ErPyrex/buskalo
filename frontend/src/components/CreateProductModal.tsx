@@ -130,7 +130,8 @@ export default function CreateProductModal({
       data.append("shop", formData.shop);
       data.append("is_infinite_stock", isInfinite ? "1" : "0");
       if (formData.category) data.append("category", formData.category);
-      if (imageToUpload) data.append("image", imageToUpload, "product_image.webp");
+      if (imageToUpload)
+        data.append("image", imageToUpload, "product_image.webp");
 
       await createProduct(data, token);
       toast.success("¡Producto creado con éxito!", {

@@ -516,9 +516,7 @@ export default function EditShopPage({
                 </div>
                 <AlertDialog>
                   <AlertDialogTrigger asChild>
-                    <Button
-                      className="border border-white/10 bg-zinc-900/80 text-white hover:bg-zinc-800 hover:text-white font-bold h-10 px-6 rounded-xl transition-all"
-                    >
+                    <Button className="border border-white/10 bg-zinc-900/80 text-white hover:bg-zinc-800 hover:text-white font-bold h-10 px-6 rounded-xl transition-all">
                       <IconRefresh size={18} className="mr-2" />
                       Resetear
                     </Button>

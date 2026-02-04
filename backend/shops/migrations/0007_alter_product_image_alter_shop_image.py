@@ -5,20 +5,23 @@ from django.db import migrations, models
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
-        ('shops', '0006_shop_is_physical'),
+        ("shops", "0006_shop_is_physical"),
     ]
 
     operations = [
         migrations.AlterField(
-            model_name='product',
-            name='image',
-            field=models.ImageField(blank=True, null=True, upload_to=shops.models.product_image_path),
+            model_name="product",
+            name="image",
+            field=models.ImageField(
+                blank=True, null=True, upload_to=shops.models.product_image_path
+            ),
         ),
         migrations.AlterField(
-            model_name='shop',
-            name='image',
-            field=models.ImageField(blank=True, null=True, upload_to=shops.models.shop_image_path),
+            model_name="shop",
+            name="image",
+            field=models.ImageField(
+                blank=True, null=True, upload_to=shops.models.shop_image_path
+            ),
         ),
     ]

@@ -166,7 +166,8 @@ export default function EditProductModal({
       data.append("stock", formData.stock || "0");
       data.append("is_infinite_stock", isInfinite ? "1" : "0");
       if (formData.category) data.append("category", formData.category);
-      if (imageToUpload) data.append("image", imageToUpload, "product_image.webp");
+      if (imageToUpload)
+        data.append("image", imageToUpload, "product_image.webp");
 
       await updateProduct(product.id, data, token);
       toast.success("¡Producto actualizado!", {
