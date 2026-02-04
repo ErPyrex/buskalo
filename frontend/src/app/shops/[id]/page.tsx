@@ -21,7 +21,8 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { useAuth } from "@/context/AuthContext";
 import { getProducts } from "@/lib/api/products";
-import { getShops } from "@/lib/api/shops";
+import { getShop } from "@/lib/api/shops";
+import PublicShopView from "@/components/PublicShopView";
 import type { Product } from "@/types";
 
 export default function ShopDashboardPage({
@@ -30,42 +31,44 @@ export default function ShopDashboardPage({
   params: Promise<{ id: string }>;
 }) {
   const { id } = use(params);
-  const { user, token } = useAuth();
+  const { user } = useAuth();
   const _router = useRouter();
 
   const [shop, setShop] = useState<any>(null);
   const [products, setProducts] = useState<Product[]>([]);
   const [loading, setLoading] = useState(true);
+  const [isOwner, setIsOwner] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isEditProductModalOpen, setIsEditProductModalOpen] = useState(false);
   const [selectedProduct, setSelectedProduct] = useState<Product | null>(null);
 
   const fetchShopData = useCallback(async () => {
-    if (!token || !user) return;
+    setLoading(true);
     try {
-      const shopIdInt = parseInt(id, 10);
-      const userShops = await getShops({ owner: user.id.toString() });
-      const foundShop = userShops.find((s: any) => s.id === shopIdInt);
+      // Fetch shop data publicly
+      const shopData = await getShop(id);
+      setShop(shopData);
 
-      if (!foundShop) {
-        console.error("Shop not found or not owner");
-      }
-      setShop(foundShop);
-
+      // Fetch products publicly
       const shopProducts = await getProducts(id);
       setProducts(shopProducts);
+
+      // Check if logged user is owner
+      if (user && shopData.owner === user.id) {
+        setIsOwner(true);
+      } else {
+        setIsOwner(false);
+      }
     } catch (error) {
       console.error("Error fetching shop data:", error);
     } finally {
       setLoading(false);
     }
-  }, [id, token, user]);
+  }, [id, user]);
 
   useEffect(() => {
-    if (token && user) {
-      fetchShopData();
-    }
-  }, [token, user, fetchShopData]);
+    fetchShopData();
+  }, [fetchShopData]);
 
   if (loading) {
     return (
@@ -78,17 +81,22 @@ export default function ShopDashboardPage({
   if (!shop) {
     return (
       <div className="min-h-screen bg-black flex flex-col items-center justify-center p-6 text-center space-y-4">
-        <h1 className="text-white text-3xl font-black">SHOP NOT FOUND</h1>
-        <p className="text-zinc-500">
-          You don't have access to this dashboard or the shop doesn't exist.
+        <h1 className="text-white text-3xl font-black uppercase tracking-tighter">Tienda no encontrada</h1>
+        <p className="text-zinc-500 max-w-sm">
+          Lo sentimos, la tienda que buscas no existe o ha sido desactivada temporalmente.
         </p>
         <Link href="/">
-          <Button variant="outline" className="border-white/10 text-white">
-            Return Home
+          <Button className="bg-white text-black hover:bg-zinc-200 font-bold px-8 rounded-xl h-11 transition-all active:scale-95 shadow-xl shadow-white/5">
+            Volver al Inicio
           </Button>
         </Link>
       </div>
     );
+  }
+
+  // If not the owner, show the public view
+  if (!isOwner) {
+    return <PublicShopView shop={shop} products={products} />;
   }
 
   return (

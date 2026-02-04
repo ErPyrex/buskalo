@@ -4,15 +4,14 @@ from django.db import migrations, models
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
-        ('shops', '0005_shop_latitude_shop_longitude'),
+        ("shops", "0005_shop_latitude_shop_longitude"),
     ]
 
     operations = [
         migrations.AddField(
-            model_name='shop',
-            name='is_physical',
+            model_name="shop",
+            name="is_physical",
             field=models.BooleanField(default=True),
         ),
     ]

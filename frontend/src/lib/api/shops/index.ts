@@ -22,6 +22,12 @@ export async function getShops(params?: { owner?: string; status?: string }) {
   return response.json();
 }
 
+export async function getShop(id: string) {
+  const response = await fetch(`${BASE_URL}/market/shops/${id}/`);
+  if (!response.ok) throw new Error("Failed to fetch shop");
+  return response.json();
+}
+
 export async function updateShop(id: number, data: FormData, token: string) {
   const response = await fetch(`${BASE_URL}/market/shops/${id}/`, {
     method: "PATCH",
