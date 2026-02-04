@@ -7,7 +7,8 @@ import {
 } from "@tabler/icons-react";
 import L from "leaflet";
 import "leaflet/dist/leaflet.css";
-import React, { useEffect, useState } from "react";
+import type React from "react";
+import { useEffect, useState } from "react";
 import {
   MapContainer,
   Marker,
@@ -121,10 +122,12 @@ export default function LocationPicker({
       },
       (error) => {
         console.error("Error getting location:", error);
-        toast.error("No pudimos obtener su ubicación actual. Verifique los permisos.");
+        toast.error(
+          "No pudimos obtener su ubicación actual. Verifique los permisos.",
+        );
         setLocating(false);
       },
-      { enableHighAccuracy: true }
+      { enableHighAccuracy: true },
     );
   };
 

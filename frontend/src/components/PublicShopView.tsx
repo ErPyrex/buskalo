@@ -7,12 +7,12 @@ import {
   IconShare,
 } from "@tabler/icons-react";
 import dynamic from "next/dynamic";
+import { toast } from "sonner";
 import { PremiumImage } from "@/components/PremiumImage";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import type { Product } from "@/types";
-import { toast } from "sonner";
 
 const SimpleMap = dynamic(() => import("@/components/SimpleMap"), {
   ssr: false,
@@ -28,7 +28,10 @@ interface PublicShopViewProps {
   products: Product[];
 }
 
-export default function PublicShopView({ shop, products }: PublicShopViewProps) {
+export default function PublicShopView({
+  shop,
+  products,
+}: PublicShopViewProps) {
   const handleShare = () => {
     navigator.clipboard.writeText(window.location.href);
     toast.success("Enlace copiado al portapapeles");
@@ -66,13 +69,14 @@ export default function PublicShopView({ shop, products }: PublicShopViewProps) 
                 {shop.name}
               </h1>
               <p className="text-zinc-400 max-w-2xl text-lg font-medium leading-relaxed">
-                {shop.description || "Bienvenidos a nuestra tienda oficial en Buskalo!."}
+                {shop.description ||
+                  "Bienvenidos a nuestra tienda oficial en Buskalo!."}
               </p>
             </div>
-            
-            <Button 
+
+            <Button
               onClick={handleShare}
-              variant="outline" 
+              variant="outline"
               className="w-fit border-white/10 bg-white/5 hover:bg-white/10 rounded-2xl gap-2 font-bold h-12 px-6"
             >
               <IconShare size={18} />
@@ -94,7 +98,9 @@ export default function PublicShopView({ shop, products }: PublicShopViewProps) 
 
           {products.length === 0 ? (
             <div className="py-20 text-center bg-zinc-900/20 rounded-[40px] border border-dashed border-white/5">
-              <p className="text-zinc-500 italic">Esta tienda aún no ha publicado productos.</p>
+              <p className="text-zinc-500 italic">
+                Esta tienda aún no ha publicado productos.
+              </p>
             </div>
           ) : (
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
@@ -143,9 +149,14 @@ export default function PublicShopView({ shop, products }: PublicShopViewProps) 
           <Card className="bg-zinc-900/40 border-white/5 backdrop-blur-xl rounded-[32px] overflow-hidden">
             <CardContent className="p-8 space-y-8">
               <div className="space-y-2">
-                <span className="text-[10px] font-black text-indigo-500 uppercase tracking-[0.2em]">Ubicación</span>
+                <span className="text-[10px] font-black text-indigo-500 uppercase tracking-[0.2em]">
+                  Ubicación
+                </span>
                 <div className="flex items-start gap-3">
-                  <IconMapPin className="text-zinc-500 flex-shrink-0 mt-1" size={20} />
+                  <IconMapPin
+                    className="text-zinc-500 flex-shrink-0 mt-1"
+                    size={20}
+                  />
                   <p className="text-white font-bold text-lg leading-tight uppercase">
                     {shop.location || "Online Only"}
                   </p>
@@ -164,8 +175,12 @@ export default function PublicShopView({ shop, products }: PublicShopViewProps) 
                     {shop.owner_username?.[0].toUpperCase()}
                   </div>
                   <div>
-                    <p className="text-[10px] font-bold text-indigo-400 uppercase tracking-widest">Dueño de la tienda</p>
-                    <p className="text-white font-black">{shop.owner_username}</p>
+                    <p className="text-[10px] font-bold text-indigo-400 uppercase tracking-widest">
+                      Dueño de la tienda
+                    </p>
+                    <p className="text-white font-black">
+                      {shop.owner_username}
+                    </p>
                   </div>
                 </div>
               </div>

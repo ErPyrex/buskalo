@@ -10,8 +10,8 @@ import {
   IconRocket,
   IconX,
 } from "@tabler/icons-react";
-import Link from "next/link";
 import dynamic from "next/dynamic";
+import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { toast } from "sonner";
@@ -93,11 +93,16 @@ export default function NewShopPage() {
       const data = new FormData();
       data.append("name", formData.name);
       data.append("description", formData.description);
-      data.append("location", formData.is_physical ? formData.location : "Tienda en línea");
+      data.append(
+        "location",
+        formData.is_physical ? formData.location : "Tienda en línea",
+      );
       data.append("status", status);
       data.append("is_physical", formData.is_physical.toString());
-      if (formData.is_physical && formData.latitude) data.append("latitude", formData.latitude.toString());
-      if (formData.is_physical && formData.longitude) data.append("longitude", formData.longitude.toString());
+      if (formData.is_physical && formData.latitude)
+        data.append("latitude", formData.latitude.toString());
+      if (formData.is_physical && formData.longitude)
+        data.append("longitude", formData.longitude.toString());
       if (imageToUpload) data.append("image", imageToUpload);
 
       await createShop(data, token);
@@ -243,10 +248,10 @@ export default function NewShopPage() {
               </div>
 
               <div className="flex items-center gap-3 p-4 bg-white/5 rounded-2xl border border-white/5 mb-6">
-                <Checkbox 
-                  id="is_physical" 
+                <Checkbox
+                  id="is_physical"
                   checked={formData.is_physical}
-                  onCheckedChange={(checked) => 
+                  onCheckedChange={(checked) =>
                     setFormData({ ...formData, is_physical: !!checked })
                   }
                   className="border-indigo-500 data-[state=checked]:bg-indigo-600"
@@ -259,7 +264,8 @@ export default function NewShopPage() {
                     Establecimiento Físico
                   </Label>
                   <p className="text-[10px] text-zinc-500">
-                    Marca esta opción si tu tienda tiene una ubicación física para tus clientes.
+                    Marca esta opción si tu tienda tiene una ubicación física
+                    para tus clientes.
                   </p>
                 </div>
               </div>
@@ -273,24 +279,31 @@ export default function NewShopPage() {
                 </Label>
                 {formData.is_physical ? (
                   <div className="space-y-4">
-                    <LocationPicker 
-                      onLocationSelect={(lat, lng, address) => 
-                        setFormData({ 
-                          ...formData, 
+                    <LocationPicker
+                      onLocationSelect={(lat, lng, address) =>
+                        setFormData({
+                          ...formData,
                           location: address,
                           latitude: lat,
-                          longitude: lng
+                          longitude: lng,
                         })
                       }
                     />
                     <div className="text-[10px] text-zinc-500 bg-white/5 p-2 rounded-lg border border-white/5">
-                      <span className="font-bold text-zinc-400">DIRECCIÓN DETECTADA:</span> {formData.location || "Selecciona un punto en el mapa..."}
+                      <span className="font-bold text-zinc-400">
+                        DIRECCIÓN DETECTADA:
+                      </span>{" "}
+                      {formData.location || "Selecciona un punto en el mapa..."}
                     </div>
                   </div>
                 ) : (
                   <div className="bg-white/5 p-4 rounded-xl border border-white/5 flex items-center gap-3">
-                    <div className="p-2 bg-indigo-500/10 rounded-lg text-indigo-400 text-xs">ONLINE</div>
-                    <div className="text-sm text-zinc-400 font-medium">Esta tienda opera exclusivamente de forma virtual.</div>
+                    <div className="p-2 bg-indigo-500/10 rounded-lg text-indigo-400 text-xs">
+                      ONLINE
+                    </div>
+                    <div className="text-sm text-zinc-400 font-medium">
+                      Esta tienda opera exclusivamente de forma virtual.
+                    </div>
                   </div>
                 )}
               </div>

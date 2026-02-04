@@ -16,13 +16,13 @@ import { use, useCallback, useEffect, useState } from "react";
 import CreateProductModal from "@/components/CreateProductModal";
 import EditProductModal from "@/components/EditProductModal";
 import { PremiumImage } from "@/components/PremiumImage";
+import PublicShopView from "@/components/PublicShopView";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { useAuth } from "@/context/AuthContext";
 import { getProducts } from "@/lib/api/products";
 import { getShop } from "@/lib/api/shops";
-import PublicShopView from "@/components/PublicShopView";
 import type { Product } from "@/types";
 
 export default function ShopDashboardPage({
@@ -81,9 +81,12 @@ export default function ShopDashboardPage({
   if (!shop) {
     return (
       <div className="min-h-screen bg-black flex flex-col items-center justify-center p-6 text-center space-y-4">
-        <h1 className="text-white text-3xl font-black uppercase tracking-tighter">Tienda no encontrada</h1>
+        <h1 className="text-white text-3xl font-black uppercase tracking-tighter">
+          Tienda no encontrada
+        </h1>
         <p className="text-zinc-500 max-w-sm">
-          Lo sentimos, la tienda que buscas no existe o ha sido desactivada temporalmente.
+          Lo sentimos, la tienda que buscas no existe o ha sido desactivada
+          temporalmente.
         </p>
         <Link href="/">
           <Button className="bg-white text-black hover:bg-zinc-200 font-bold px-8 rounded-xl h-11 transition-all active:scale-95 shadow-xl shadow-white/5">
