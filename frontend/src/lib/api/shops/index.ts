@@ -12,12 +12,26 @@ export async function createShop(data: FormData, token: string) {
   return response.json();
 }
 
-export async function getShops(params?: { owner?: string; status?: string }) {
+export async function getShops(params?: {
+  owner?: string;
+  status?: string;
+  token?: string;
+}) {
   const query = new URLSearchParams();
   if (params?.owner) query.append("owner", params.owner);
   if (params?.status) query.append("status", params.status);
 
-  const response = await fetch(`${BASE_URL}/market/shops/?${query.toString()}`);
+  const headers: HeadersInit = {};
+  if (params?.token) {
+    headers["Authorization"] = `Bearer ${params.token}`;
+  }
+
+  const response = await fetch(
+    `${BASE_URL}/market/shops/?${query.toString()}`,
+    {
+      headers,
+    }
+  );
   if (!response.ok) throw new Error("Failed to fetch shops");
   return response.json();
 }
@@ -49,4 +63,15 @@ export async function deleteShop(id: number, token: string) {
   });
   if (!response.ok) throw new Error("Failed to delete shop");
   return true;
+}
+
+export async function resetShop(id: number, token: string) {
+  const response = await fetch(`${BASE_URL}/market/shops/${id}/reset/`, {
+    method: "POST",
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  });
+  if (!response.ok) throw new Error("Failed to reset shop");
+  return response.json();
 }

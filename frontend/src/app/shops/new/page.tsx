@@ -103,7 +103,7 @@ export default function NewShopPage() {
         data.append("latitude", formData.latitude.toString());
       if (formData.is_physical && formData.longitude)
         data.append("longitude", formData.longitude.toString());
-      if (imageToUpload) data.append("image", imageToUpload);
+      if (imageToUpload) data.append("image", imageToUpload, "shop_image.webp");
 
       await createShop(data, token);
       toast.success(

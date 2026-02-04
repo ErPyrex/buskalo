@@ -171,11 +171,19 @@ export default function PublicShopView({
 
               <div className="pt-6 border-t border-white/5">
                 <div className="flex items-center gap-4 p-4 bg-indigo-500/10 rounded-2xl border border-indigo-500/20">
-                  <div className="w-10 h-10 rounded-full bg-indigo-600 flex items-center justify-center font-black">
-                    {shop.owner_username?.[0].toUpperCase()}
+                  <div className="w-10 h-10 rounded-full bg-indigo-600 flex items-center justify-center font-black overflow-hidden relative border border-white/10 flex-shrink-0">
+                    {shop.owner_avatar ? (
+                      <img
+                        src={shop.owner_avatar}
+                        alt={shop.owner_username}
+                        className="w-full h-full object-cover"
+                      />
+                    ) : (
+                      shop.owner_username?.[0].toUpperCase()
+                    )}
                   </div>
                   <div>
-                    <p className="text-[10px] font-bold text-indigo-400 uppercase tracking-widest">
+                    <p className="text-[10px] font-bold text-indigo-400 uppercase tracking-widest leading-none mb-1">
                       Dueño de la tienda
                     </p>
                     <p className="text-white font-black">

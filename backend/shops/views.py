@@ -1,4 +1,6 @@
-from rest_framework import viewsets, permissions
+from rest_framework import viewsets, permissions, status
+from rest_framework.decorators import action
+from rest_framework.response import Response
 from django.db import models
 from .models import Shop, Product, Category
 from .serializers import ShopSerializer, ProductSerializer, CategorySerializer
@@ -8,7 +10,6 @@ class IsOwnerOrReadOnly(permissions.BasePermission):
     def has_object_permission(self, request, view, obj):
         if request.method in permissions.SAFE_METHODS:
             return True
-        # For shops, obj.owner exists. For products, obj.shop.owner exists.
         owner = getattr(obj, "owner", None) or getattr(obj.shop, "owner", None)
         return owner == request.user
 
@@ -21,29 +22,54 @@ class ShopViewSet(viewsets.ModelViewSet):
     def perform_create(self, serializer):
         serializer.save(owner=self.request.user)
 
-    def get_queryset(self):
-        queryset = Shop.objects.all()
-        owner_id = self.request.query_params.get("owner")
-        status = self.request.query_params.get("status")
+    @action(detail=True, methods=["post"])
+    def reset(self, request, pk=None):
+        shop = self.get_object()
+        # Delete all products
+        shop.products.all().delete()
+        # Reset shop fields
+        shop.description = ""
+        shop.location = "Tienda en línea"
+        shop.latitude = None
+        shop.longitude = None
+        shop.is_physical = False
+        shop.image = None
+        shop.status = "draft"
+        shop.save()
 
+        return Response({"status": "shop reset successful"}, status=status.HTTP_200_OK)
+
+    def get_queryset(self):
+        user = self.request.user
+        queryset = Shop.objects.all()
+
+        # Filtering logic
+        owner_id = self.request.query_params.get("owner")
+        status_param = self.request.query_params.get("status")
+
+        if user.is_authenticated:
+            # If the user is authenticated, they can see:
+            # 1. All their own shops (Draft or Active)
+            # 2. Active shops from everyone else
+            # We use a Q object to combine these
+            queryset = queryset.filter(
+                models.Q(owner=user) | models.Q(status="active")
+            )
+        else:
+            # Guests only see active shops
+            queryset = queryset.filter(status="active")
+
+        # Apply optional filters
         if owner_id:
             queryset = queryset.filter(owner_id=owner_id)
-            # If a status is specified, filter by it.
-            # If not, and it's NOT the owner requesting, only active.
-            # If it IS the owner, allow seeing drafts.
-            if status:
-                queryset = queryset.filter(status=status)
-            elif str(self.request.user.id) != owner_id:
-                queryset = queryset.filter(status="active")
-        else:
-            # General listing: only active shops
-            queryset = queryset.filter(status="active")
+        
+        if status_param:
+            queryset = queryset.filter(status=status_param)
 
         search = self.request.query_params.get("search")
         if search:
             queryset = queryset.filter(
-                models.Q(name__icontains=search)
-                | models.Q(description__icontains=search)
+                models.Q(name__icontains=search) | models.Q(description__icontains=search)
             )
 
         return queryset
@@ -64,13 +90,9 @@ class ProductViewSet(viewsets.ModelViewSet):
 
         if search:
             queryset = queryset.filter(
-                models.Q(name__icontains=search)
-                | models.Q(description__icontains=search)
+                models.Q(name__icontains=search) | models.Q(description__icontains=search)
             )
 
-        # Only products from active shops should be searchable publicly
-        # unless it's a specific shop filter which already handles its own logic
-        # but let's be safe: for general search, only active shops.
         if not shop_id:
             queryset = queryset.filter(shop__status="active")
 

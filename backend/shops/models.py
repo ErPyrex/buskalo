@@ -1,5 +1,23 @@
 from django.db import models
 from django.conf import settings
+from django.utils.text import slugify
+import uuid
+
+
+def shop_image_path(instance, filename):
+    ext = filename.split(".")[-1]
+    name = slugify(instance.name)
+    # Use uuid to ensure uniqueness and availability even if no ID yet
+    uid = uuid.uuid4().hex[:8]
+    return f"shops/{name}_{uid}.{ext}"
+
+
+def product_image_path(instance, filename):
+    ext = filename.split(".")[-1]
+    shop_name = slugify(instance.shop.name)
+    prod_name = slugify(instance.name)
+    uid = uuid.uuid4().hex[:8]
+    return f"products/{shop_name}/{prod_name}_{uid}.{ext}"
 
 
 class Category(models.Model):
@@ -23,7 +41,7 @@ class Shop(models.Model):
     name = models.CharField(max_length=255)
     location = models.CharField(max_length=255)
     description = models.TextField(blank=True)
-    image = models.ImageField(upload_to="shops/", null=True, blank=True)
+    image = models.ImageField(upload_to=shop_image_path, null=True, blank=True)
     latitude = models.FloatField(null=True, blank=True)
     longitude = models.FloatField(null=True, blank=True)
     is_physical = models.BooleanField(default=True)
@@ -41,7 +59,7 @@ class Product(models.Model):
     )
     name = models.CharField(max_length=255)
     description = models.TextField(blank=True)
-    image = models.ImageField(upload_to="products/", null=True, blank=True)
+    image = models.ImageField(upload_to=product_image_path, null=True, blank=True)
     price = models.DecimalField(max_digits=10, decimal_places=2)
     stock = models.PositiveIntegerField(default=0)
     is_infinite_stock = models.BooleanField(default=False)

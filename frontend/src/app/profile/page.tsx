@@ -96,7 +96,8 @@ export default function ProfilePage() {
       data.append("last_name", formData.last_name);
       data.append("bio", formData.bio);
       if (imageToUpload) {
-        data.append("avatar", imageToUpload);
+        // Provide a filename to ensure the backend gets an extension
+        data.append("avatar", imageToUpload, "avatar.webp");
       }
 
       const updatedUser = await updateProfile(data, token);

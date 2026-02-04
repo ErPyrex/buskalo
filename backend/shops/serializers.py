@@ -35,6 +35,7 @@ class ProductSerializer(serializers.ModelSerializer):
 
 class ShopSerializer(serializers.ModelSerializer):
     owner_username = serializers.ReadOnlyField(source="owner.username")
+    owner_avatar = serializers.ImageField(source="owner.avatar", read_only=True)
     products = ProductSerializer(many=True, read_only=True)
 
     class Meta:
@@ -43,6 +44,7 @@ class ShopSerializer(serializers.ModelSerializer):
             "id",
             "owner",
             "owner_username",
+            "owner_avatar",
             "name",
             "location",
             "latitude",
