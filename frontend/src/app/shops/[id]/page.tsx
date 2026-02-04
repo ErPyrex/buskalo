@@ -15,7 +15,6 @@ import { useRouter } from "next/navigation";
 import { use, useCallback, useEffect, useState } from "react";
 import CreateProductModal from "@/components/CreateProductModal";
 import EditProductModal from "@/components/EditProductModal";
-import EditShopModal from "@/components/EditShopModal";
 import { PremiumImage } from "@/components/PremiumImage";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -38,7 +37,6 @@ export default function ShopDashboardPage({
   const [products, setProducts] = useState<Product[]>([]);
   const [loading, setLoading] = useState(true);
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [isEditModalOpen, setIsEditModalOpen] = useState(false);
   const [isEditProductModalOpen, setIsEditProductModalOpen] = useState(false);
   const [selectedProduct, setSelectedProduct] = useState<Product | null>(null);
 
@@ -138,14 +136,15 @@ export default function ShopDashboardPage({
             </div>
           </div>
           <div className="flex items-center gap-3">
-            <Button
-              variant="outline"
-              size="icon"
-              onClick={() => setIsEditModalOpen(true)}
-              className="border-white/5 bg-white/5 text-zinc-400 rounded-xl hover:text-white hover:bg-white/10"
-            >
-              <IconSettings size={18} />
-            </Button>
+            <Link href={`/shops/${id}/edit`}>
+              <Button
+                variant="outline"
+                size="icon"
+                className="border-white/5 bg-white/5 text-zinc-400 rounded-xl hover:text-white hover:bg-white/10"
+              >
+                <IconSettings size={18} />
+              </Button>
+            </Link>
             <Button
               onClick={() => setIsModalOpen(true)}
               className="bg-white text-black hover:bg-zinc-200 font-bold px-6 h-10 rounded-xl flex items-center gap-2 shadow-lg shadow-white/5 active:scale-95 transition-all"
@@ -297,13 +296,6 @@ export default function ShopDashboardPage({
         open={isModalOpen}
         onOpenChange={setIsModalOpen}
         onProductCreated={fetchShopData}
-      />
-
-      <EditShopModal
-        shop={shop}
-        open={isEditModalOpen}
-        onOpenChange={setIsEditModalOpen}
-        onShopUpdated={fetchShopData}
       />
 
       <EditProductModal

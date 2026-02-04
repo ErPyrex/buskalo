@@ -24,6 +24,9 @@ class Shop(models.Model):
     location = models.CharField(max_length=255)
     description = models.TextField(blank=True)
     image = models.ImageField(upload_to="shops/", null=True, blank=True)
+    latitude = models.FloatField(null=True, blank=True)
+    longitude = models.FloatField(null=True, blank=True)
+    is_physical = models.BooleanField(default=True)
     status = models.CharField(max_length=10, choices=STATUS_CHOICES, default="active")
     created_at = models.DateTimeField(auto_now_add=True)
 

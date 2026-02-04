@@ -67,12 +67,30 @@ export default function Navbar() {
                   <IconPlus size={18} />
                 </Button>
               </Link>
-              <div className="hidden sm:flex items-center gap-2 px-3 py-1.5 bg-white/5 rounded-full border border-white/10">
-                <IconUser size={16} className="text-indigo-400" />
+              <Link
+                href="/profile"
+                className="hidden sm:flex items-center gap-2 px-3 py-1.5 bg-white/5 rounded-full border border-white/10 hover:bg-white/10 hover:border-white/20 transition-all group"
+              >
+                <IconUser
+                  size={16}
+                  className="text-indigo-400 group-hover:scale-110 transition-transform"
+                />
                 <span className="text-sm text-zinc-300 font-medium">
                   {user.username}
                 </span>
-              </div>
+              </Link>
+
+              {/* Mobile User Icon */}
+              <Link href="/profile" className="flex sm:hidden">
+                <Button
+                  variant="ghost"
+                  size="icon"
+                  className="text-zinc-400 hover:text-white hover:bg-white/10 h-9 w-9"
+                  title="Mi Perfil"
+                >
+                  <IconUser size={20} className="text-indigo-400" />
+                </Button>
+              </Link>
               <Button
                 variant="ghost"
                 size="icon"

@@ -37,3 +37,19 @@ export async function fetchProfile(token: string) {
   if (!response.ok) throw new Error("Could not fetch profile");
   return response.json();
 }
+
+export async function updateProfile(data: FormData, token: string) {
+  const response = await fetch(`${BASE_URL}/auth/profile/`, {
+    method: "PATCH",
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+    body: data,
+  });
+  if (!response.ok) {
+    const errorData = await response.json().catch(() => ({}));
+    const errorMessage = Object.values(errorData).flat().join(" ") || "Update failed";
+    throw new Error(errorMessage);
+  }
+  return response.json();
+}

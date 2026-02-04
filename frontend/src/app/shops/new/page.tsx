@@ -11,13 +11,25 @@ import {
   IconX,
 } from "@tabler/icons-react";
 import Link from "next/link";
+import dynamic from "next/dynamic";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { toast } from "sonner";
 import { ImageCropper } from "@/components/ImageCropper";
+
+const LocationPicker = dynamic(() => import("@/components/LocationPicker"), {
+  ssr: false,
+  loading: () => (
+    <div className="h-[300px] w-full bg-white/5 animate-pulse rounded-xl flex items-center justify-center text-zinc-500 text-sm">
+      Cargando mapa...
+    </div>
+  ),
+});
+
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
+import { Checkbox } from "@/components/ui/checkbox";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
@@ -38,7 +50,10 @@ export default function NewShopPage() {
   const [formData, setFormData] = useState({
     name: "",
     description: "",
-    location: "", // Backend uses 'location', frontend UI said 'address'
+    location: "",
+    latitude: null as number | null,
+    longitude: null as number | null,
+    is_physical: true,
   });
   const [image, setImage] = useState<File | Blob | null>(null);
   const [imagePreview, setImagePreview] = useState<string | null>(null);
@@ -78,8 +93,11 @@ export default function NewShopPage() {
       const data = new FormData();
       data.append("name", formData.name);
       data.append("description", formData.description);
-      data.append("location", formData.location);
+      data.append("location", formData.is_physical ? formData.location : "Tienda en línea");
       data.append("status", status);
+      data.append("is_physical", formData.is_physical.toString());
+      if (formData.is_physical && formData.latitude) data.append("latitude", formData.latitude.toString());
+      if (formData.is_physical && formData.longitude) data.append("longitude", formData.longitude.toString());
       if (imageToUpload) data.append("image", imageToUpload);
 
       await createShop(data, token);
@@ -224,22 +242,57 @@ export default function NewShopPage() {
                 />
               </div>
 
+              <div className="flex items-center gap-3 p-4 bg-white/5 rounded-2xl border border-white/5 mb-6">
+                <Checkbox 
+                  id="is_physical" 
+                  checked={formData.is_physical}
+                  onCheckedChange={(checked) => 
+                    setFormData({ ...formData, is_physical: !!checked })
+                  }
+                  className="border-indigo-500 data-[state=checked]:bg-indigo-600"
+                />
+                <div className="grid gap-1 leading-none">
+                  <Label
+                    htmlFor="is_physical"
+                    className="text-sm font-bold text-white uppercase tracking-tight cursor-pointer"
+                  >
+                    Establecimiento Físico
+                  </Label>
+                  <p className="text-[10px] text-zinc-500">
+                    Marca esta opción si tu tienda tiene una ubicación física para tus clientes.
+                  </p>
+                </div>
+              </div>
+
               <div className="space-y-2">
                 <Label
                   htmlFor="location"
                   className="text-zinc-400 text-xs font-bold uppercase tracking-wider"
                 >
-                  Physical Address
+                  Ubicación de la Tienda
                 </Label>
-                <Input
-                  id="location"
-                  placeholder="123 Tech Square, City"
-                  className="bg-black/20 border-white/10 h-11 text-white focus:border-indigo-500/50 rounded-xl"
-                  value={formData.location}
-                  onChange={(e) =>
-                    setFormData({ ...formData, location: e.target.value })
-                  }
-                />
+                {formData.is_physical ? (
+                  <div className="space-y-4">
+                    <LocationPicker 
+                      onLocationSelect={(lat, lng, address) => 
+                        setFormData({ 
+                          ...formData, 
+                          location: address,
+                          latitude: lat,
+                          longitude: lng
+                        })
+                      }
+                    />
+                    <div className="text-[10px] text-zinc-500 bg-white/5 p-2 rounded-lg border border-white/5">
+                      <span className="font-bold text-zinc-400">DIRECCIÓN DETECTADA:</span> {formData.location || "Selecciona un punto en el mapa..."}
+                    </div>
+                  </div>
+                ) : (
+                  <div className="bg-white/5 p-4 rounded-xl border border-white/5 flex items-center gap-3">
+                    <div className="p-2 bg-indigo-500/10 rounded-lg text-indigo-400 text-xs">ONLINE</div>
+                    <div className="text-sm text-zinc-400 font-medium">Esta tienda opera exclusivamente de forma virtual.</div>
+                  </div>
+                )}
               </div>
 
               <div className="space-y-2">
