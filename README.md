@@ -23,7 +23,7 @@ A robust **Django 6.0+** REST API.
 - **Framework**: Django Rest Framework (DRF) with JWT Authentication.
 - **Storage**: **Cloudflare R2** integration for globally distributed media assets.
 - **API**: Full CRUD for Shops, Products, and Categories.
-- **Database**: SQLite (Local development), ready for PostgreSQL.
+- **Database**: **PostgreSQL** (Production and Docker), SQLite (Minimal fallback).
 
 ---
 
@@ -33,16 +33,15 @@ A robust **Django 6.0+** REST API.
 
 Buskalo! implements a dual-sided image optimization strategy to ensure maximum speed and minimum storage costs:
 
-1. **Precision Cropping**: Interactive UI to frame and rotate images before upload.
-2. **Client-Side Processing**: Before upload, images are compressed and converted to **WebP** directly in the user's browser (max 1MB, 1200px max width/height).
-3. **Persistent Caching**: Cloudflare R2 is configured with `Cache-Control` headers and **Clean URLs** (no query signatures) to allow permanent browser caching.
-4. **Skeleton Blur Transitions**: Custom `PremiumImage` component provides a smooth transition from a blurred placeholder to a sharp high-quality image with a "glass" shimmer effect.
+1. **Precision Cropping**: Interactive UI to frame and rotate images (Shops, Products, Avatars) before upload.
+2. **Client-Side Processing**: Before upload, images are compressed and converted to **WebP** directly in the user's browser (max 1MB).
+3. **Persistent Caching**: Cloudflare R2 is configured with `Cache-Control` headers.
 
-### 📍 Local Commerce Logic
+### 📍 Local Commerce & Maps
 
-- **Global Catalog**: Explore products from all stores in one place.
-- **Shop Hierarchy**: Each product belongs to a specific shop with its own location and status.
-- **Dashboard**: Professional management dashboard for shop owners to track inventory and drafts.
+- **OpenStreetMap Integration**: Interactive map for selecting shop locations with reverse geocoding.
+- **Shop Types**: Support for both **Physical Establishment** (with map location) and **Online Only** stores.
+- **Profile Management**: Full user profile customization including bio and avatars.
 
 ---
 
@@ -50,16 +49,17 @@ Buskalo! implements a dual-sided image optimization strategy to ensure maximum s
 
 ### 1. Environment Setup
 
-Create a `.env` file in `/backend` with:
+We provide `.env.example` files in both `/backend` and `/frontend` directories. Copy them to `.env`:
 
-```env
-# Cloudflare R2 Configuration
-AWS_ACCESS_KEY_ID=XXX
-AWS_SECRET_ACCESS_KEY=XXX
-AWS_STORAGE_BUCKET_NAME=XXX
-AWS_S3_ENDPOINT_URL=https://XXX.r2.cloudflarestorage.com
-AWS_S3_CUSTOM_DOMAIN=pub-XXX.r2.dev
+```bash
+cp backend/.env.example backend/.env
+cp frontend/.env.example frontend/.env
 ```
+
+**Backend Configuration requirements:**
+
+- **Cloudflare R2**: `AWS_ACCESS_KEY_ID`, `AWS_SECRET_ACCESS_KEY`, etc.
+- **Database**: `DB_NAME`, `DB_USER`, `DB_PASSWORD`, `DB_HOST`, `DB_PORT`.
 
 ### 2. Backend
 

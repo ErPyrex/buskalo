@@ -14,11 +14,18 @@ This project has been containerized using Docker and Docker Compose to facilitat
    - Base: Python 3.12-slim
    - Includes: Automatic migrations on startup.
    - Volume: Synchronized with `./backend` for live development.
+   - Dependencies: `db` service.
 
 2. **Frontend (Next.js)**:
    - Port: `3000`
    - Base: Node 20-slim (using pnpm)
    - Volume: Synchronized with `./frontend`.
+   - Dependencies: `backend` service.
+
+3. **Database (PostgreSQL)**:
+   - Port: `5432`
+   - Image: `postgres:16-alpine`
+   - Persistence: `postgres_data` Docker volume.
 
 ## How to Run
 
@@ -39,14 +46,19 @@ docker-compose up -d
 - **View logs**: `docker-compose logs -f`
 - **Stop services**: `docker-compose down`
 - **Run commands in the backend** (e.g., create superuser):
+
   ```bash
   docker-compose exec backend python manage.py createsuperuser
   ```
+
 - **Reinstall dependencies (backend)**:
+
   ```bash
   docker-compose build backend
   ```
+
 - **Reinstall dependencies (frontend)**:
+
   ```bash
   docker-compose build frontend
   ```
@@ -55,13 +67,16 @@ docker-compose up -d
 
 1. **WSL2**: It is highly recommended to use the **WSL 2 backend** in Docker Desktop settings for much better performance.
 2. **Line Endings (CRLF vs LF)**: If you experience errors like `\r: command not found` when starting the containers, it's likely due to Windows line endings. Ensure your files use `LF` (Unix line endings). You can configure Git to handle this automatically:
+
    ```bash
    git config --global core.autocrlf input
    ```
+
 3. **Paths**: Docker Compose handles paths correctly across platforms, but always run commands from the project root directory (`buskalo/`).
 
 ---
 
 ## Notes
+
 - The frontend is configured by default to communicate with `http://localhost:8000/api`.
-- R2 credentials will be automatically loaded from `backend/.env`.
+- R2 and Database credentials will be automatically loaded from `backend/.env`.
