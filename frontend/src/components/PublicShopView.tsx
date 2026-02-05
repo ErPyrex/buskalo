@@ -7,6 +7,7 @@ import {
   IconShare,
 } from "@tabler/icons-react";
 import dynamic from "next/dynamic";
+import Link from "next/link";
 import { toast } from "sonner";
 import { PremiumImage } from "@/components/PremiumImage";
 import { Badge } from "@/components/ui/badge";
@@ -105,40 +106,44 @@ export default function PublicShopView({
           ) : (
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
               {products.map((product) => (
-                <Card
+                <Link
                   key={product.id}
-                  className="group bg-zinc-900/40 border-white/5 backdrop-blur-sm overflow-hidden hover:border-indigo-500/50 transition-all duration-500 rounded-3xl"
+                  href={`/products/${product.id}`}
+                  className="block"
                 >
-                  <div className="h-56 flex items-center justify-center relative">
-                    {product.image ? (
-                      <PremiumImage
-                        src={product.image}
-                        alt={product.name}
-                        className="group-hover:scale-110"
-                      />
-                    ) : (
-                      <div className="w-full h-full bg-zinc-800 flex items-center justify-center">
-                        <IconPackage size={48} className="text-white/5" />
+                  <Card className="group bg-zinc-900/40 border-white/5 backdrop-blur-sm overflow-hidden hover:border-indigo-500/50 transition-all duration-500 rounded-3xl h-full">
+                    <div className="h-56 flex items-center justify-center relative bg-zinc-950">
+                      {product.image ? (
+                        <PremiumImage
+                          src={product.image}
+                          alt={product.name}
+                          className="group-hover:scale-110 transition-transform duration-700"
+                        />
+                      ) : (
+                        <div className="w-full h-full bg-zinc-800 flex items-center justify-center">
+                          <IconPackage size={48} className="text-white/5" />
+                        </div>
+                      )}
+                      <div className="absolute top-4 right-4">
+                        <Badge className="bg-white text-black font-black h-8 px-4 text-sm shadow-2xl border-none">
+                          ${product.price}
+                        </Badge>
                       </div>
-                    )}
-                    <div className="absolute top-4 right-4">
-                      <Badge className="bg-white text-black font-black h-8 px-4 text-sm shadow-2xl">
-                        ${product.price}
-                      </Badge>
                     </div>
-                  </div>
-                  <CardContent className="p-6 space-y-3">
-                    <h3 className="text-xl font-black uppercase text-white group-hover:text-indigo-400 transition-colors">
-                      {product.name}
-                    </h3>
-                    <p className="text-zinc-500 text-sm line-clamp-2 h-10 leading-relaxed">
-                      {product.description || "No hay descripción disponible."}
-                    </p>
-                    <Button className="w-full mt-4 bg-white text-black hover:bg-zinc-200 font-bold rounded-xl h-11">
-                      Ver Detalles
-                    </Button>
-                  </CardContent>
-                </Card>
+                    <CardContent className="p-6 space-y-3">
+                      <h3 className="text-xl font-black uppercase text-white group-hover:text-indigo-400 transition-colors">
+                        {product.name}
+                      </h3>
+                      <p className="text-zinc-500 text-sm line-clamp-2 h-10 leading-relaxed">
+                        {product.description ||
+                          "No hay descripción disponible."}
+                      </p>
+                      <div className="w-full mt-4 bg-white text-black group-hover:bg-zinc-200 font-bold rounded-xl h-11 flex items-center justify-center text-sm transition-colors">
+                        Ver Detalles
+                      </div>
+                    </CardContent>
+                  </Card>
+                </Link>
               ))}
             </div>
           )}

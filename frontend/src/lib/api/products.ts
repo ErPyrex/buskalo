@@ -23,6 +23,24 @@ export async function getProducts(shopId?: string): Promise<Product[]> {
   }
 }
 
+export async function getProduct(id: string): Promise<Product | null> {
+  try {
+    const response = await fetch(`${BASE_URL}/market/products/${id}/`, {
+      cache: "no-store",
+    });
+
+    if (!response.ok) {
+      if (response.status === 404) return null;
+      throw new Error("Failed to fetch product");
+    }
+
+    return response.json();
+  } catch (error) {
+    console.error("API Error:", error);
+    return null;
+  }
+}
+
 export async function createProduct(data: FormData, token: string) {
   const response = await fetch(`${BASE_URL}/market/products/`, {
     method: "POST",

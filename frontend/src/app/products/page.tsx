@@ -7,6 +7,7 @@ import {
   IconSearch,
   IconX,
 } from "@tabler/icons-react";
+import Link from "next/link";
 import { useEffect, useMemo, useState } from "react";
 import { PremiumImage } from "@/components/PremiumImage";
 import { Badge } from "@/components/ui/badge";
@@ -134,97 +135,99 @@ export default function ProductsPage() {
         ) : (
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 animate-in fade-in duration-1000">
             {filteredProducts.map((product: Product) => (
-              <Card
+              <Link
                 key={product.id}
-                className="group bg-zinc-900/40 border-white/5 backdrop-blur-sm overflow-hidden hover:border-indigo-500/50 transition-all duration-500 hover:translate-y-[-8px] rounded-3xl"
+                href={`/products/${product.id}`}
+                className="block"
               >
-                <div className="h-56 flex items-center justify-center relative overflow-hidden bg-zinc-950">
-                  {product.image ? (
-                    <PremiumImage
-                      src={product.image}
-                      alt={product.name}
-                      className="group-hover:scale-110 transition-transform duration-700"
-                    />
-                  ) : (
-                    <div className="w-full h-full bg-zinc-900 flex items-center justify-center">
-                      <IconPackage
-                        size={64}
-                        className="text-white/5 group-hover:scale-110 transition-transform duration-700 group-hover:text-indigo-500/20"
+                <Card className="group bg-zinc-900/40 border-white/5 backdrop-blur-sm overflow-hidden hover:border-indigo-500/50 transition-all duration-500 hover:translate-y-[-8px] rounded-3xl h-full">
+                  <div className="h-56 flex items-center justify-center relative overflow-hidden bg-zinc-950">
+                    {product.image ? (
+                      <PremiumImage
+                        src={product.image}
+                        alt={product.name}
+                        className="group-hover:scale-110 transition-transform duration-700"
                       />
-                    </div>
-                  )}
-                  <div className="absolute top-4 right-4 z-10">
-                    <Badge
-                      className={`${parseFloat(product.price.toString()) === 0 ? "bg-emerald-500/90 text-white" : "bg-indigo-600/90 text-white"} backdrop-blur-md border-none shadow-2xl font-black px-3 py-1 text-xs tracking-tighter rounded-lg`}
-                    >
-                      {parseFloat(product.price.toString()) === 0
-                        ? "GRATIS"
-                        : `$${product.price}`}
-                    </Badge>
-                  </div>
-                </div>
-
-                <CardHeader className="p-6 pb-2 space-y-3">
-                  <div className="flex flex-wrap items-center gap-2">
-                    {product.shop_name && (
-                      <Badge
-                        variant="secondary"
-                        className="text-[9px] font-black uppercase tracking-widest px-2 py-0.5 bg-indigo-500/10 text-indigo-400 border-none"
-                      >
-                        {product.shop_name}
-                      </Badge>
-                    )}
-                    {product.category_name && (
-                      <Badge
-                        variant="secondary"
-                        className="text-[9px] font-black uppercase tracking-widest px-2 py-0.5 bg-white/5 text-zinc-400 border-none"
-                      >
-                        {product.category_name}
-                      </Badge>
-                    )}
-                  </div>
-                  <CardTitle className="text-white text-xl font-black line-clamp-1 group-hover:text-indigo-400 transition-colors transition-duration-300 uppercase tracking-tight">
-                    {product.name}
-                  </CardTitle>
-                </CardHeader>
-
-                <CardContent className="p-6 pt-0 space-y-6">
-                  <p className="text-zinc-500 text-xs font-medium line-clamp-2 h-8 leading-relaxed">
-                    {product.description || "No description provided."}
-                  </p>
-
-                  <div className="flex items-center justify-between pt-4 border-t border-white/5 mb-[-8px]">
-                    <div className="space-y-1.5">
-                      <div className="flex items-center gap-2 text-zinc-400">
-                        <IconArchive size={14} className="text-indigo-500/50" />
-                        <span className="text-[10px] font-bold uppercase tracking-wider">
-                          {product.is_infinite_stock
-                            ? "Stock Disponible"
-                            : `${product.stock} disponibles`}
-                        </span>
+                    ) : (
+                      <div className="w-full h-full bg-zinc-900 flex items-center justify-center">
+                        <IconPackage
+                          size={64}
+                          className="text-white/5 group-hover:scale-110 transition-transform duration-700 group-hover:text-indigo-500/20"
+                        />
                       </div>
-                      {product.shop_location && (
-                        <div className="flex items-center gap-2 text-zinc-600 group-hover:text-zinc-500 transition-colors">
-                          <IconMapPin
-                            size={14}
-                            className="text-zinc-800 group-hover:text-indigo-500/30 transition-colors"
-                          />
-                          <span className="text-[10px] font-bold uppercase tracking-tighter truncate max-w-[120px]">
-                            {product.shop_location}
-                          </span>
-                        </div>
+                    )}
+                    <div className="absolute top-4 right-4 z-10">
+                      <Badge
+                        className={`${parseFloat(product.price.toString()) === 0 ? "bg-emerald-500/90 text-white" : "bg-indigo-600/90 text-white"} backdrop-blur-md border-none shadow-2xl font-black px-3 py-1 text-xs tracking-tighter rounded-lg`}
+                      >
+                        {parseFloat(product.price.toString()) === 0
+                          ? "GRATIS"
+                          : `$${product.price}`}
+                      </Badge>
+                    </div>
+                  </div>
+
+                  <CardHeader className="p-6 pb-2 space-y-3">
+                    <div className="flex flex-wrap items-center gap-2">
+                      {product.shop_name && (
+                        <Badge
+                          variant="secondary"
+                          className="text-[9px] font-black uppercase tracking-widest px-2 py-0.5 bg-indigo-500/10 text-indigo-400 border-none"
+                        >
+                          {product.shop_name}
+                        </Badge>
+                      )}
+                      {product.category_name && (
+                        <Badge
+                          variant="secondary"
+                          className="text-[9px] font-black uppercase tracking-widest px-2 py-0.5 bg-white/5 text-zinc-400 border-none"
+                        >
+                          {product.category_name}
+                        </Badge>
                       )}
                     </div>
-                    <Button
-                      variant="outline"
-                      size="sm"
-                      className="h-9 px-4 text-[10px] font-black uppercase tracking-widest border-white/5 bg-white/5 hover:bg-white hover:text-black transition-all rounded-xl"
-                    >
-                      DETALLES
-                    </Button>
-                  </div>
-                </CardContent>
-              </Card>
+                    <CardTitle className="text-white text-xl font-black line-clamp-1 group-hover:text-indigo-400 transition-colors transition-duration-300 uppercase tracking-tight">
+                      {product.name}
+                    </CardTitle>
+                  </CardHeader>
+
+                  <CardContent className="p-6 pt-0 space-y-6">
+                    <p className="text-zinc-500 text-xs font-medium line-clamp-2 h-8 leading-relaxed">
+                      {product.description || "No description provided."}
+                    </p>
+
+                    <div className="flex items-center justify-between pt-4 border-t border-white/5 mb-[-8px]">
+                      <div className="space-y-1.5">
+                        <div className="flex items-center gap-2 text-zinc-400">
+                          <IconArchive
+                            size={14}
+                            className="text-indigo-500/50"
+                          />
+                          <span className="text-[10px] font-bold uppercase tracking-wider">
+                            {product.is_infinite_stock
+                              ? "Stock Disponible"
+                              : `${product.stock} disponibles`}
+                          </span>
+                        </div>
+                        {product.shop_location && (
+                          <div className="flex items-center gap-2 text-zinc-600 group-hover:text-zinc-500 transition-colors">
+                            <IconMapPin
+                              size={14}
+                              className="text-zinc-800 group-hover:text-indigo-500/30 transition-colors"
+                            />
+                            <span className="text-[10px] font-bold uppercase tracking-tighter truncate max-w-[120px]">
+                              {product.shop_location}
+                            </span>
+                          </div>
+                        )}
+                      </div>
+                      <div className="h-9 px-4 text-[10px] flex items-center justify-center font-black uppercase tracking-widest border border-white/5 bg-white/5 group-hover:bg-white group-hover:text-black transition-all rounded-xl">
+                        DETALLES
+                      </div>
+                    </div>
+                  </CardContent>
+                </Card>
+              </Link>
             ))}
           </div>
         )}
