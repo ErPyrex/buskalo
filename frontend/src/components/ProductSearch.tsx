@@ -71,8 +71,7 @@ export default function ProductSearch() {
             p.name.toLowerCase().includes(searchStr) ||
             p.description?.toLowerCase().includes(searchStr) ||
             p.category_name?.toLowerCase().includes(searchStr),
-        )
-        .slice(0, 5);
+        );
       setFilteredResults(results);
     } else {
       const results = shops
@@ -81,8 +80,7 @@ export default function ProductSearch() {
             s.name.toLowerCase().includes(searchStr) ||
             s.description?.toLowerCase().includes(searchStr) ||
             s.location?.toLowerCase().includes(searchStr),
-        )
-        .slice(0, 5);
+        );
       setFilteredResults(results);
     }
   }, [query, mode, products, shops]);
@@ -151,7 +149,7 @@ export default function ProductSearch() {
 
       {/* Results Dropdown */}
       {isOpen && (query.trim() || loading) && (
-        <Card className="absolute top-full left-0 w-full mt-2 bg-zinc-950/90 border-white/10 backdrop-blur-2xl overflow-hidden rounded-2xl shadow-2xl animate-in fade-in slide-in-from-top-2 duration-200">
+        <Card className="absolute top-full left-0 w-full mt-2 bg-zinc-950/90 border-white/10 backdrop-blur-2xl overflow-y-auto max-h-[60vh] rounded-2xl shadow-2xl animate-in fade-in slide-in-from-top-2 duration-200 scrollbar-thin scrollbar-thumb-white/10 scrollbar-track-transparent">
           <div className="p-2">
             {loading && filteredResults.length === 0 ? (
               <div className="p-8 flex flex-col items-center gap-3 text-zinc-500">
