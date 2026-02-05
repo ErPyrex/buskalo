@@ -20,11 +20,35 @@ from django.conf.urls.static import static
 from django.contrib import admin
 from django.urls import path, include
 
+from drf_spectacular.views import (
+    SpectacularAPIView,
+    SpectacularRedocView,
+    SpectacularSwaggerView,
+)
+
+api_v1_urlpatterns = [
+    path("", include("api.urls")),
+    path("auth/", include("users.urls")),
+    path("market/", include("shops.urls")),
+]
+
 urlpatterns = [
     path("admin/", admin.site.urls),
-    path("api/", include("api.urls")),
-    path("api/auth/", include("users.urls")),
-    path("api/market/", include("shops.urls")),
+    path("api/v1/", include(api_v1_urlpatterns)),
+    # Fallback for old API calls (optional, but good for transition)
+    path("api/", include(api_v1_urlpatterns)),
+    # Documentation
+    path("api/schema/", SpectacularAPIView.as_view(), name="schema"),
+    path(
+        "api/docs/",
+        SpectacularSwaggerView.as_view(url_name="schema"),
+        name="swagger-ui",
+    ),
+    path(
+        "api/redoc/",
+        SpectacularRedocView.as_view(url_name="schema"),
+        name="redoc",
+    ),
 ]
 
 if settings.DEBUG:
