@@ -25,6 +25,14 @@ class ShopViewSet(viewsets.ModelViewSet):
     @action(detail=True, methods=["post"])
     def reset(self, request, pk=None):
         shop = self.get_object()
+        
+        # Security: require explicit confirmation
+        if not request.data.get("confirm"):
+            return Response(
+                {"error": "Confirmation required. Please send 'confirm': true in the request body."},
+                status=status.HTTP_400_BAD_REQUEST
+            )
+
         # Delete all products
         shop.products.all().delete()
         # Reset shop fields
