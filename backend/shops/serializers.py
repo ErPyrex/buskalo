@@ -31,6 +31,9 @@ class ProductSerializer(serializers.ModelSerializer):
             "created_at",
         )
         read_only_fields = ("created_at",)
+        extra_kwargs = {
+            "description": {"max_length": 1000},
+        }
 
 
 class ShopSerializer(serializers.ModelSerializer):
@@ -57,3 +60,6 @@ class ShopSerializer(serializers.ModelSerializer):
             "created_at",
         )
         read_only_fields = ("owner", "created_at")
+        extra_kwargs = {
+            "description": {"max_length": 2000},
+        }
