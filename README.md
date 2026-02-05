@@ -102,15 +102,15 @@ pnpm biome format --write . # Format code
 
 ### Auth
 
-- `POST /api/auth/register/`: New account.
-- `POST /api/auth/login/`: JWT tokens.
-- `GET /api/auth/profile/`: User details.
+- `POST /api/v1/auth/register/`: New account.
+- `POST /api/v1/auth/login/`: JWT tokens.
+- `GET /api/v1/auth/profile/`: User details.
 
 ### Business Logic
 
-- `GET /api/shops/`: List all active shops.
-- `GET /api/products/`: Global catalog with shop details (name & location).
-- `POST /api/products/`: Create item (requires shop ownership).
+- `GET /api/v1/market/shops/`: List all active shops.
+- `GET /api/v1/market/products/`: Global catalog with shop details.
+- `POST /api/v1/market/products/`: Create item.
 
 ---
 

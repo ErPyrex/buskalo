@@ -78,5 +78,5 @@ docker-compose up -d
 
 ## Notes
 
-- The frontend is configured by default to communicate with `http://localhost:8000/api`.
+- The frontend is configured by default to communicate with `http://localhost:8000/api/v1`.
 - R2 and Database credentials will be automatically loaded from `backend/.env`.
