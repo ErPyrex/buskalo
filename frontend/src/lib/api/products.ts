@@ -1,6 +1,39 @@
 import type { Product } from "@/types";
 
-const BASE_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:8000/api";
+const BASE_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:8000/api/v1";
+
+async function handleResponse(response: Response) {
+  if (!response.ok) {
+    const errorData = await response.json().catch(() => ({}));
+    let errorMessage =
+      errorData.detail || errorData.error || `HTTP error! status: ${response.status}`;
+
+    // Handle Django REST Framework field-specific validation errors
+    if (typeof errorData === "object" && !errorData.detail && !errorData.error) {
+      const fieldErrors = Object.entries(errorData)
+        .map(([field, errors]) => {
+          const fieldName = field.charAt(0).toUpperCase() + field.slice(1);
+          const messages = Array.isArray(errors) ? errors.join(" ") : errors;
+          return `${fieldName}: ${messages}`;
+        })
+        .join(" | ");
+      if (fieldErrors) errorMessage = fieldErrors;
+    }
+
+    throw new Error(errorMessage);
+  }
+  const data = await response.json();
+  // Handle DRF pagination
+  if (
+    data &&
+    typeof data === "object" &&
+    "results" in data &&
+    Array.isArray(data.results)
+  ) {
+    return data.results;
+  }
+  return data;
+}
 
 export async function getProducts(shopId?: string): Promise<Product[]> {
   try {
@@ -12,14 +45,10 @@ export async function getProducts(shopId?: string): Promise<Product[]> {
       cache: "no-store",
     });
 
-    if (!response.ok) {
-      throw new Error("Failed to fetch products");
-    }
-
-    return response.json();
+    return handleResponse(response);
   } catch (error) {
-    console.error("API Error:", error);
-    return [];
+    console.error("API Error in getProducts:", error);
+    throw error; // Re-throw to handle in UI
   }
 }
 
@@ -29,15 +58,11 @@ export async function getProduct(id: string): Promise<Product | null> {
       cache: "no-store",
     });
 
-    if (!response.ok) {
-      if (response.status === 404) return null;
-      throw new Error("Failed to fetch product");
-    }
-
-    return response.json();
+    if (response.status === 404) return null;
+    return handleResponse(response);
   } catch (error) {
-    console.error("API Error:", error);
-    return null;
+    console.error("API Error in getProduct:", error);
+    throw error;
   }
 }
 
@@ -49,8 +74,7 @@ export async function createProduct(data: FormData, token: string) {
     },
     body: data,
   });
-  if (!response.ok) throw new Error("Failed to create product");
-  return response.json();
+  return handleResponse(response);
 }
 
 export async function updateProduct(id: number, data: FormData, token: string) {
@@ -61,8 +85,7 @@ export async function updateProduct(id: number, data: FormData, token: string) {
     },
     body: data,
   });
-  if (!response.ok) throw new Error("Failed to update product");
-  return response.json();
+  return handleResponse(response);
 }
 
 export async function deleteProduct(id: number, token: string) {
@@ -72,12 +95,11 @@ export async function deleteProduct(id: number, token: string) {
       Authorization: `Bearer ${token}`,
     },
   });
-  if (!response.ok) throw new Error("Failed to delete product");
-  return true;
+  if (response.status === 204) return true;
+  return handleResponse(response);
 }
 
 export async function getCategories() {
   const response = await fetch(`${BASE_URL}/market/categories/`);
-  if (!response.ok) throw new Error("Failed to fetch categories");
-  return response.json();
+  return handleResponse(response);
 }

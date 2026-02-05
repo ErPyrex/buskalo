@@ -1,4 +1,37 @@
-const BASE_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:8000/api";
+const BASE_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:8000/api/v1";
+
+async function handleResponse(response: Response) {
+  if (!response.ok) {
+    const errorData = await response.json().catch(() => ({}));
+    let errorMessage =
+      errorData.detail || errorData.error || `HTTP error! status: ${response.status}`;
+
+    // Handle Django REST Framework field-specific validation errors
+    if (typeof errorData === "object" && !errorData.detail && !errorData.error) {
+      const fieldErrors = Object.entries(errorData)
+        .map(([field, errors]) => {
+          const fieldName = field.charAt(0).toUpperCase() + field.slice(1);
+          const messages = Array.isArray(errors) ? errors.join(" ") : errors;
+          return `${fieldName}: ${messages}`;
+        })
+        .join(" | ");
+      if (fieldErrors) errorMessage = fieldErrors;
+    }
+
+    throw new Error(errorMessage);
+  }
+  const data = await response.json();
+  // ...
+  if (
+    data &&
+    typeof data === "object" &&
+    "results" in data &&
+    Array.isArray(data.results)
+  ) {
+    return data.results;
+  }
+  return data;
+}
 
 export async function createShop(data: FormData, token: string) {
   const response = await fetch(`${BASE_URL}/market/shops/`, {
@@ -8,8 +41,7 @@ export async function createShop(data: FormData, token: string) {
     },
     body: data,
   });
-  if (!response.ok) throw new Error("Failed to create shop");
-  return response.json();
+  return handleResponse(response);
 }
 
 export async function getShops(params?: {
@@ -32,14 +64,12 @@ export async function getShops(params?: {
       headers,
     },
   );
-  if (!response.ok) throw new Error("Failed to fetch shops");
-  return response.json();
+  return handleResponse(response);
 }
 
 export async function getShop(id: string) {
   const response = await fetch(`${BASE_URL}/market/shops/${id}/`);
-  if (!response.ok) throw new Error("Failed to fetch shop");
-  return response.json();
+  return handleResponse(response);
 }
 
 export async function updateShop(id: number, data: FormData, token: string) {
@@ -50,8 +80,7 @@ export async function updateShop(id: number, data: FormData, token: string) {
     },
     body: data,
   });
-  if (!response.ok) throw new Error("Failed to update shop");
-  return response.json();
+  return handleResponse(response);
 }
 
 export async function deleteShop(id: number, token: string) {
@@ -61,8 +90,8 @@ export async function deleteShop(id: number, token: string) {
       Authorization: `Bearer ${token}`,
     },
   });
-  if (!response.ok) throw new Error("Failed to delete shop");
-  return true;
+  if (response.status === 204) return true;
+  return handleResponse(response);
 }
 
 export async function resetShop(id: number, token: string) {
@@ -70,8 +99,9 @@ export async function resetShop(id: number, token: string) {
     method: "POST",
     headers: {
       Authorization: `Bearer ${token}`,
+      "Content-Type": "application/json",
     },
+    body: JSON.stringify({ confirm: true }),
   });
-  if (!response.ok) throw new Error("Failed to reset shop");
-  return response.json();
+  return handleResponse(response);
 }
